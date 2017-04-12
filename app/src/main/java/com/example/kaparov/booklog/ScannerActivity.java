@@ -1,5 +1,7 @@
 package com.example.kaparov.booklog;
 
 
-public class ScannerActivity {
+import android.support.v7.app.AppCompatActivity;
+
+public class ScannerActivity extends AppCompatActivity {
 }

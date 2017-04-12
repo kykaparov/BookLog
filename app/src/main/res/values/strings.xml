@@ -28,4 +28,5 @@
     <string name="cancel">Cancel</string>
     <string name="editor_delete_book_failed">Error with deleting book</string>
     <string name="editor_delete_book_successful">Book deleted</string>
+    <string name="scan_a_book">Scan a book</string>
 </resources>
