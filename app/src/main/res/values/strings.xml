@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">BookLog</string>
+    <string name="action_settings">Settings</string>
+    <string name="add_new_book">Add a book</string>
+    <string name="empty_view">Here can be your book!</string>
+    <string name="category_book">Book</string>
+    <string name="hint_book_title">Title</string>
+    <string name="hint_book_author">Author</string>
+    <string name="hint_book_category">Category</string>
+    <string name="hint_pages">Pages</string>
+    <string name="category_importance">Importance</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_set_notification">Set notification</string>
+    <string name="action_set_progresss">Set current page</string>
+    <string name="editor_insert_book_failed">Error with saving book</string>
+    <string name="editor_insert_book_successful">Book saved</string>
+    <string name="unknown_author">Unknown author</string>
+    <string name="unknown_category">Unknown category</string>
+    <string name="edit_book">Edit book</string>
+    <string name="editor_update_book_failed">Error with updating book</string>
+    <string name="editor_update_book_successful">Book updated</string>
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep Editing</string>
+    <string name="delete_dialog_msg">Delete this book?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="editor_delete_book_failed">Error with deleting book</string>
+    <string name="editor_delete_book_successful">Book deleted</string>
+</resources>

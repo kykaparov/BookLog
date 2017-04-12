@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <!-- Layout for the editor -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:padding="@dimen/activity_margin"
+        tools:context=".EditorActivity">
+
+        <!-- Book category -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+            <!-- Label -->
+            <TextView
+                android:id="@+id/book_label"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:text="@string/category_book"
+                android:textColor="@color/colorAccent"
+                android:fontFamily = "sans-serif-medium"
+                android:textAppearance = "?android:textAppearanceSmall"/>
+
+            <ImageView
+                android:id="@+id/book_image"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:src="@mipmap/ic_launcher"/>
+
+            </LinearLayout>
+
+            <!-- Input fields -->
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:paddingLeft="4dp"
+                android:orientation="vertical">
+
+                <!-- Title field -->
+                <EditText
+                    android:id="@+id/edit_book_title"
+                    android:hint="@string/hint_book_title"
+                    android:inputType="textCapWords"
+                    style="@style/EditorFieldStyle" />
+
+                <!-- Author field -->
+                <EditText
+                    android:id="@+id/edit_book_author"
+                    android:hint="@string/hint_book_author"
+                    android:inputType="textCapWords"
+                    style="@style/EditorFieldStyle" />
+
+                <!-- Author field -->
+                <EditText
+                    android:id="@+id/edit_book_category"
+                    android:hint="@string/hint_book_category"
+                    android:inputType="textCapWords"
+                    style="@style/EditorFieldStyle" />
+
+                <!-- Pages field -->
+                <EditText
+                    android:id="@+id/edit_pages"
+                    android:hint="@string/hint_pages"
+                    android:inputType="numberDecimal"
+                    style="@style/EditorFieldStyle" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Rating category -->
+        <LinearLayout
+            android:id="@+id/container_measurement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Label -->
+            <TextView
+                android:text="@string/category_importance"
+                style="@style/CategoryStyle" />
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:paddingLeft="4dp"
+                android:orientation="vertical">
+
+                <!-- Rating field -->
+                <RatingBar
+                    android:id="@+id/edit_book_rating"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="fill_vertical|center_horizontal"
+                    android:numStars="5"
+                    android:stepSize="1"
+                    android:isIndicator="false"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
