@@ -20,7 +20,7 @@
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:src="@drawable/ic_book_cyan_600_48dp"/>
+            android:src="@drawable/ic_book_brown_900_24dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

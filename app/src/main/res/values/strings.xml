@@ -2,11 +2,11 @@
     <string name="app_name">Books Log</string>
     <string name="add_new_book">Add a book</string>
     <string name="empty_view">Here can be your book!</string>
-    <string name="category_book">Book</string>
-    <string name="hint_book_title">Title</string>
-    <string name="hint_book_author">Author</string>
-    <string name="hint_book_category">Category</string>
-    <string name="hint_pages">Pages</string>
+    <string name="book">Book</string>
+    <string name="book_title">Title</string>
+    <string name="book_author">Author</string>
+    <string name="book_category">Category</string>
+    <string name="book_pages">Pages</string>
     <string name="category_importance">Importance</string>
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>

@@ -103,7 +103,7 @@ public class EditorActivity extends AppCompatActivity implements
         mTitleEditText = (EditText) findViewById(R.id.edit_book_title);
         mAuthorEditText = (EditText) findViewById(R.id.edit_book_author);
         mCategoryEditText = (EditText) findViewById(R.id.edit_book_category);
-        mPagesEditText = (EditText) findViewById(R.id.edit_pages);
+        mPagesEditText = (EditText) findViewById(R.id.edit_book_pages);
         mImageView = (ImageView) findViewById(R.id.edit_book_image);
         mBookRating = (RatingBar) findViewById(R.id.edit_book_rating);
 
@@ -117,7 +117,7 @@ public class EditorActivity extends AppCompatActivity implements
         mImageView.setOnTouchListener(mTouchListener);
         mBookRating.setOnTouchListener(mTouchListener);
 
-        Glide.with(this).load("http://goo.gl/gEgYUd").into(mImageView);
+        //Glide.with(this).load("http://goo.gl/gEgYUd").into(mImageView);
 //        mImageView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
