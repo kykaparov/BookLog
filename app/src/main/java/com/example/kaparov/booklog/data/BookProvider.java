@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.kaparov.booklog.data.BookContract.*;
 import static com.example.kaparov.booklog.data.BookContract.CONTENT_AUTHORITY;
@@ -21,16 +22,10 @@ import static com.example.kaparov.booklog.data.BookContract.PATH_BOOKS;
 public class BookProvider extends ContentProvider {
 
     private static final String LOG_TAG = BookProvider.class.getSimpleName();
-
-    /** Database helper object */
-    private BookDbHelper mDbHelper;
-
     /** URI matcher code for the content URI for the books table */
     private static final int BOOKS = 100;
-
     /** URI matcher code for the content URI for a single book in the books table */
     private static final int BOOK_ID = 101;
-
     /**
      * UriMatcher object to match a content URI to a corresponding code.
      * The input passed into the constructor represents the code to return for the root URI.
@@ -40,12 +35,17 @@ public class BookProvider extends ContentProvider {
 
     // Static initializer. This is run the first time anything is called from this class.
     static {
-        //This URI is used to provide access to MULTIPLE rows of the pets table.
+        //This URI is used to provide access to MULTIPLE rows of the books table.
         sUriMatcher.addURI(CONTENT_AUTHORITY, PATH_BOOKS, BOOKS);
 
-        //This URI is used to provide access to ONE single row of the pets table.
+        //This URI is used to provide access to ONE single row of the books table.
         sUriMatcher.addURI(CONTENT_AUTHORITY, PATH_BOOKS + "/#", BOOK_ID);
     }
+
+    /**
+     * Database helper object
+     */
+    private BookDbHelper mDbHelper;
 
     @Override
     public boolean onCreate() {
@@ -69,9 +69,9 @@ public class BookProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         switch (match) {
             case BOOKS:
-                // For the PETS code, query the pets table directly with the given
+                // For the BOOKS code, query the books table directly with the given
                 // projection, selection, selection arguments, and sort order. The cursor
-                // could contain multiple rows of the pets table.
+                // could contain multiple rows of the books table.
                 cursor = database.query(BookEntry.TABLE_NAME, projection,
                         selection, selectionArgs, null, null, sortOrder);
                 break;
@@ -131,24 +131,10 @@ public class BookProvider extends ContentProvider {
      */
     private Uri insertBook(Uri uri, ContentValues values) {
 
-        // Check that the name is not null
-        String name = values.getAsString(BookEntry.COLUMN_TITLE);
-        if (name == null) {
-            throw new IllegalArgumentException("Book requires a title");
-        }
-
-        // If the weight is provided, check that it's greater than or equal to 0 kg
-        Integer pages = values.getAsInteger(BookEntry.COLUMN_PAGES);
-        if (pages != null && pages < 0) {
-            throw new IllegalArgumentException("Book requires valid pages");
-        }
-
-        // No need to check the author, category, rating, any value is valid (including null).
-
         // Get writeable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
-        // Insert the new pet with the given values
+        // Insert the new book with the given values
         long id = database.insert(BookEntry.TABLE_NAME, null, values);
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (id == -1) {
@@ -156,7 +142,7 @@ public class BookProvider extends ContentProvider {
             return null;
         }
 
-        // Notify all listeners that the data has changed for the pet content URI
+        // Notify all listeners that the data has changed for the book content URI
         getContext().getContentResolver().notifyChange(uri, null);
 
         // Return the new URI with the ID (of the newly inserted row) appended at the end
@@ -181,25 +167,6 @@ public class BookProvider extends ContentProvider {
 
     private int updateBook(Uri uri, ContentValues values,
                            String selection, String[] selectionArgs) {
-
-        // If the {@link BookEntry#COLUMN_TITLE} key is present,
-        // check that the name value is not null.
-        if (values.containsKey(BookEntry.COLUMN_TITLE)) {
-            String name = values.getAsString(BookEntry.COLUMN_TITLE);
-            if (name == null) {
-                throw new IllegalArgumentException("Book requires a title");
-            }
-        }
-
-        // If the {@link BookEntry#COLUMN_PAGES} key is present,
-        // check that the weight value is valid.
-        if (values.containsKey(BookEntry.COLUMN_PAGES)) {
-            // Check that the pages is greater than or equal to 0
-            Integer weight = values.getAsInteger(BookEntry.COLUMN_PAGES);
-            if (weight != null && weight < 0) {
-                throw new IllegalArgumentException("Pet requires valid weight");
-            }
-        }
 
         // If there are no values to update, then don't try to update the database
         if (values.size() == 0) {

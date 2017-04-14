@@ -9,20 +9,19 @@ import android.provider.BaseColumns;
  */
 public class BookContract {
 
-    // To prevent someone from accidentally instantiating the contract class,
-    // give it an empty constructor.
-    private BookContract() {};
-
     //The "Content authority" is a name for the entire content provider
     public static final String CONTENT_AUTHORITY = "com.example.kaparov.booklog";
-
     /**
      * Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact
      * the content provider.
      */
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
-
     public static final String PATH_BOOKS = "books";
+
+    // To prevent someone from accidentally instantiating the contract class,
+    // give it an empty constructor.
+    private BookContract() {
+    }
 
     /**
      * Inner class that defines constant values for the books database table.
@@ -53,10 +52,10 @@ public class BookContract {
         public static final String COLUMN_AUTHOR = "author";
         public static final String COLUMN_CATEGORY = "category";
         public static final String COLUMN_PAGES = "pages";
-        //public static final String COLUMN_PUBLISHER = "publisher";
-        //public static final String COLUMN_PUBLISHED_DATE = "published date";
-        //public static final String COLUMN_ISBN = "isbn";
+        //        public static final String COLUMN_IMAGE = "image";
         public static final String COLUMN_RATING = "rating";
+//        public static final String COLUMN_PUBLISHED_DATE = "published date";
+//        public static final String COLUMN_ISBN = "isbn";
 
 
     }

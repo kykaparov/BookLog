@@ -11,18 +11,26 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 import com.example.kaparov.booklog.data.BookContract.*;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Allows user to create a new book or edit an existing one.
@@ -33,6 +41,8 @@ public class EditorActivity extends AppCompatActivity implements
     /** Identifier for the book data loader */
     private static final int EXISTING_BOOK_LOADER = 0;
 
+    private static final int SELECT_PICTURE = 1;
+
     /** Content URI for the existing book (null if it's a new book) */
     private Uri mCurrentBookUri;
 
@@ -41,9 +51,12 @@ public class EditorActivity extends AppCompatActivity implements
     private EditText mAuthorEditText;
     private EditText mCategoryEditText;
     private EditText mPagesEditText;
+    private ImageView mImageView;
     private RatingBar mBookRating;
 
-    /** Boolean flag that keeps track of whether the pet has been edited (true) or not (false) */
+    /**
+     * Boolean flag that keeps track of whether the book has been edited (true) or not (false)
+     */
     private boolean mBookHasChanged = false;
 
     /**
@@ -75,7 +88,7 @@ public class EditorActivity extends AppCompatActivity implements
             setTitle(getString(R.string.add_new_book));
 
             // Invalidate the options menu, so the "Delete" menu option can be hidden.
-            // (It doesn't make sense to delete a pet that hasn't been created yet.)
+            // (It doesn't make sense to delete a book that hasn't been created yet.)
             invalidateOptionsMenu();
         } else {
             // Otherwise this is an existing book, so change app bar to say "Edit Book"
@@ -91,6 +104,7 @@ public class EditorActivity extends AppCompatActivity implements
         mAuthorEditText = (EditText) findViewById(R.id.edit_book_author);
         mCategoryEditText = (EditText) findViewById(R.id.edit_book_category);
         mPagesEditText = (EditText) findViewById(R.id.edit_pages);
+        mImageView = (ImageView) findViewById(R.id.edit_book_image);
         mBookRating = (RatingBar) findViewById(R.id.edit_book_rating);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
@@ -100,22 +114,31 @@ public class EditorActivity extends AppCompatActivity implements
         mAuthorEditText.setOnTouchListener(mTouchListener);
         mCategoryEditText.setOnTouchListener(mTouchListener);
         mPagesEditText.setOnTouchListener(mTouchListener);
+        mImageView.setOnTouchListener(mTouchListener);
         mBookRating.setOnTouchListener(mTouchListener);
+
+        Glide.with(this).load("http://goo.gl/gEgYUd").into(mImageView);
+//        mImageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openImageChooser();
+//            }
+//        });
 
 
     }
 
     /**
-     * Get user input from editor and save pet into database.
+     * Get user input from editor and save book into database.
      */
-    private void saveBook() {
+    private int saveBook() {
         // Read from input fields
         String titleString = mTitleEditText.getText().toString().trim();
         String authorString = mAuthorEditText.getText().toString().trim();
         String categoryString = mCategoryEditText.getText().toString().trim();
         String pagesString = mPagesEditText.getText().toString().trim();
-        int pages = Integer.parseInt(pagesString);
-        int rating = mBookRating.getNumStars();
+//        mImageView.get
+        Float rating = mBookRating.getRating();
 
         // Check if this is supposed to be a new book
         // and check if all the fields in the editor are blank
@@ -124,8 +147,20 @@ public class EditorActivity extends AppCompatActivity implements
                 TextUtils.isEmpty(categoryString) && TextUtils.isEmpty(pagesString)) {
             // Since no fields were modified, we can return early without creating a new book.
             // No need to create ContentValues and no need to do any ContentProvider operations.
-            return;
+            return 0;
         }
+
+        // Check that the title is not null
+        if (TextUtils.isEmpty(titleString)) {
+            return 1;
+        }
+
+        // Check that the pages are not null
+        if (TextUtils.isEmpty(pagesString)) {
+            return 1;
+        }
+
+        // No need to check the author, category, rating, any value is valid (including null).
 
         // Create a ContentValues object where column names are the keys,
         // and book attributes from the editor are the values.
@@ -133,7 +168,8 @@ public class EditorActivity extends AppCompatActivity implements
         values.put(BookEntry.COLUMN_TITLE, titleString);
         values.put(BookEntry.COLUMN_AUTHOR, authorString);
         values.put(BookEntry.COLUMN_CATEGORY, categoryString);
-        values.put(BookEntry.COLUMN_PAGES, pages);
+        values.put(BookEntry.COLUMN_PAGES, pagesString);
+//        values.put(BookEntry.COLUMN_IMAGE, pagesString);
         values.put(BookEntry.COLUMN_RATING, rating);
 
 
@@ -154,9 +190,9 @@ public class EditorActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
             }
         } else {
-            // Otherwise this is an EXISTING book, so update the book with content URI: mCurrentPetUri
+            // Otherwise this is an EXISTING book, so update the book with content URI: mCurrentBookUri
             // and pass in the new ContentValues. Pass in null for the selection and selection args
-            // because mCurrentPetUri will already identify the correct row in the database that
+            // because mCurrentbookUri will already identify the correct row in the database that
             // we want to modify.
             int rowsAffected = getContentResolver().update(mCurrentBookUri, values, null, null);
 
@@ -171,6 +207,8 @@ public class EditorActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
             }
         }
+
+        return 0;
     }
 
 
@@ -203,12 +241,16 @@ public class EditorActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Save book to database
-                saveBook();
-                // Exit activity
-                finish();
 
-                return true;
+                // Save book to database
+                if (saveBook() == 0) {
+                    // Exit activity
+                    finish();
+                    return true;
+                } else {
+                    Toast.makeText(this, getString(R.string.toast_require), Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 // Pop up confirmation dialog for deletion
@@ -278,6 +320,7 @@ public class EditorActivity extends AppCompatActivity implements
                 BookEntry.COLUMN_AUTHOR,
                 BookEntry.COLUMN_CATEGORY,
                 BookEntry.COLUMN_PAGES,
+//                BookEntry.COLUMN_IMAGE,
                 BookEntry.COLUMN_RATING };
 
         // This loader will execute the ContentProvider's query method on a background thread
@@ -304,20 +347,24 @@ public class EditorActivity extends AppCompatActivity implements
             int authorColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_AUTHOR);
             int categoryColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_CATEGORY);
             int pagesColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PAGES);
+//            int imageColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_IMAGE);
             int ratingColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_RATING);
 
             // Extract out the value from the Cursor for the given column index
             String bookTitle = cursor.getString(titleColumnIndex);
             String bookAuthor = cursor.getString(authorColumnIndex);
             String bookCategory = cursor.getString(categoryColumnIndex);
-            int bookPages = cursor.getInt(pagesColumnIndex);
-            int bookRating = cursor.getInt(ratingColumnIndex);
+            String bookPages = cursor.getString(pagesColumnIndex);
+//            byte[] bookImage = cursor.getBlob(imageColumnIndex);
+            Float bookRating = cursor.getFloat(ratingColumnIndex);
 
             // Update the views on the screen with the values from the database
             mTitleEditText.setText(bookTitle);
             mAuthorEditText.setText(bookAuthor);
             mCategoryEditText.setText(bookCategory);
-            mBookRating.setNumStars(bookRating);
+            mPagesEditText.setText(bookPages);
+//            imageView.insertImage(bookImage)
+            mBookRating.setRating(bookRating);
         }
     }
 
@@ -329,7 +376,8 @@ public class EditorActivity extends AppCompatActivity implements
         mAuthorEditText.setText("");
         mCategoryEditText.setText("");
         mPagesEditText.setText("");
-        mBookRating.setNumStars(0);
+//        mImageView.setImageBitmap();
+        mBookRating.setRating(0);
 
     }
 
@@ -350,7 +398,7 @@ public class EditorActivity extends AppCompatActivity implements
         builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Keep editing" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing the book.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -363,7 +411,7 @@ public class EditorActivity extends AppCompatActivity implements
     }
 
     /**
-     * Prompt the user to confirm that they want to delete this pet.
+     * Prompt the user to confirm that they want to delete this book.
      */
     private void showDeleteConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners
@@ -372,14 +420,14 @@ public class EditorActivity extends AppCompatActivity implements
         builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Delete" button, so delete the pet.
-                deletePet();
+                // User clicked the "Delete" button, so delete the book.
+                deleteBook();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Cancel" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing the book.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -394,7 +442,7 @@ public class EditorActivity extends AppCompatActivity implements
     /**
      * Perform the deletion of the book in the database.
      */
-    private void deletePet() {
+    private void deleteBook() {
         // Only perform the delete if this is an existing book.
         if (mCurrentBookUri != null) {
             // Call the ContentResolver to delete the book at the given content URI.
@@ -417,4 +465,77 @@ public class EditorActivity extends AppCompatActivity implements
         // Close the activity
         finish();
     }
+
+    // Choose an image from Gallery
+    void openImageChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_VIEW);
+        startActivityForResult(Intent.createChooser(intent, "Select a book image"), SELECT_PICTURE);
+    }
+
+////    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+////        if (resultCode == RESULT_OK) {
+////            if (requestCode == SELECT_PICTURE) {
+////
+////                Uri selectedImageUri = data.getData();
+////
+////                mImageView.setImageURI(selectedImageUri);
+//
+//
+////                if (null != selectedImageUri) {
+////
+////                    // Saving to Database...
+////                    if (saveImageInDB(selectedImageUri)) {
+////                        showMessage("Image Saved in Database...");
+////                        imgView.setImageURI(selectedImageUri);
+////                    }
+////
+////                    // Reading from Database after 3 seconds just to show the message
+////                    new Handler().postDelayed(new Runnable() {
+////                        @Override
+////                        public void run() {
+////                            if (loadImageFromDB()) {
+////                                showMessage("Image Loaded from Database...");
+////                            }
+////                        }
+////                    }, 3000);
+////                }
+//
+//            }
+//        }
+//    }
+
+//    // Save the
+//    Boolean saveImageInDB(Uri selectedImageUri) {
+//
+//        try {
+//            dbHelper.open();
+//            InputStream iStream = getContentResolver().openInputStream(selectedImageUri);
+//            byte[] inputData = Utils.getBytes(iStream);
+//            dbHelper.insertImage(inputData);
+//            dbHelper.close();
+//            return true;
+//        } catch (IOException ioe) {
+//            Log.e(TAG, "<saveImageInDB> Error : " + ioe.getLocalizedMessage());
+//            dbHelper.close();
+//            return false;
+//        }
+//
+//    }
+//
+//    Boolean loadImageFromDB() {
+//        try {
+//            dbHelper.open();
+//            byte[] bytes = dbHelper.retreiveImageFromDB();
+//            dbHelper.close();
+//            // Show Image from DB in ImageView
+//            imgView.setImageBitmap(Utils.getImage(bytes));
+//            return true;
+//        } catch (Exception e) {
+//            Log.e(TAG, "<loadImageFromDB> Error : " + e.getLocalizedMessage());
+//            dbHelper.close();
+//            return false;
+//        }
+//    }
 }

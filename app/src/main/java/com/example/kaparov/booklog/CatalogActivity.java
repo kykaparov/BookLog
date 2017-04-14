@@ -8,12 +8,18 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.kaparov.booklog.data.BookContract.*;
@@ -25,10 +31,12 @@ import com.github.clans.fab.FloatingActionMenu;
  * Displays list of books that were entered and stored in the app.
  */
 public class CatalogActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor>{
+        LoaderManager.LoaderCallbacks<Cursor>, NavigationView.OnNavigationItemSelectedListener {
 
-    /** Identifier for the pet data loader */
-    private static final int PET_LOADER = 0;
+    /**
+     * Identifier for the book data loader
+     */
+    private static final int BOOK_LOADER = 0;
 
     /** Adapter for the ListView */
     BookCursorAdapter  mCursorAdapter;
@@ -58,7 +66,7 @@ public class CatalogActivity extends AppCompatActivity implements
         });
 
 
-        FloatingActionButton fabBtnAdd = (FloatingActionButton) findViewById(R.id.fab_add);
+        final FloatingActionButton fabBtnAdd = (FloatingActionButton) findViewById(R.id.fab_add);
         fabBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +75,17 @@ public class CatalogActivity extends AppCompatActivity implements
                 startActivity(intent);
             }
         });
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ImageView itemMenuImage = (ImageView) findViewById(R.id.item_menu_image);
 
         // Find the ListView which will be populated with the book data
         ListView bookListView = (ListView) findViewById(R.id.listview);
@@ -80,7 +99,7 @@ public class CatalogActivity extends AppCompatActivity implements
         mCursorAdapter = new BookCursorAdapter(this, null);
         bookListView.setAdapter(mCursorAdapter);
 
-        // Setup the item click listener
+
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -100,67 +119,30 @@ public class CatalogActivity extends AppCompatActivity implements
             }
         });
 
+//        bookListView.setLongClickable(true);
+//
+//        bookListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//
+//                return false;
+//            }
+//        });
+
         // Kick off the loader
-        getLoaderManager().initLoader(PET_LOADER, null, this);
+        getLoaderManager().initLoader(BOOK_LOADER, null, this);
     }
 
-//    /**
-//     * Helper method to insert hardcoded pet data into the database. For debugging purposes only.
-//     */
-//    private void insertPet() {
-//        // Create a ContentValues object where column names are the keys,
-//        // and Toto's pet attributes are the values.
-//        ContentValues values = new ContentValues();
-//        values.put(PetEntry.COLUMN_PET_NAME, "Toto");
-//        values.put(PetEntry.COLUMN_PET_BREED, "Terrier");
-//        values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
-//        values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
-//
-//        // Insert a new row for Toto into the provider using the ContentResolver.
-//        // Use the {@link PetEntry#CONTENT_URI} to indicate that we want to insert
-//        // into the pets database table.
-//        // Receive the new content URI that will allow us to access Toto's data in the future.
-//        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
-//    }
-//
-//    /**
-//     * Helper method to delete all pets in the database.
-//     */
-//    private void deleteAllPets() {
-//        int rowsDeleted = getContentResolver().delete(PetEntry.CONTENT_URI, null, null);
-//        Log.v("CatalogActivity", rowsDeleted + " rows deleted from pet database");
-//    }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        displayDatabaseInfo();
-//    }
-//
-//    private void displayDatabaseInfo() {
-//
-//        String[] projection = {
-//                BookEntry._ID,
-//                BookEntry.COLUMN_TITLE,
-//                BookEntry.COLUMN_AUTHOR,
-//                BookEntry.COLUMN_CATEGORY,
-//                BookEntry.COLUMN_PAGES,
-//                BookEntry.COLUMN_RATING};
-//
-//        Cursor cursor = getContentResolver().query(BookEntry.CONTENT_URI, projection, null, null, null);
-//
-//        ListView petListView = (ListView) findViewById(R.id.listview);
-//
-//        BookCursorAdapter adapter = new BookCursorAdapter(this, cursor);
-//
-//        View emptyView = findViewById(R.id.empty_view);
-//        petListView.setEmptyView(emptyView);
-//
-//        petListView.setAdapter(adapter);
-//
-//
-//    }
-//
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -177,7 +159,13 @@ public class CatalogActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_scan_book) {
+            Intent intent = new Intent(CatalogActivity.this, ScannerActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.action_manually_add) {
+            Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -192,7 +180,9 @@ public class CatalogActivity extends AppCompatActivity implements
                 BookEntry.COLUMN_TITLE,
                 BookEntry.COLUMN_AUTHOR,
                 BookEntry.COLUMN_CATEGORY,
-                BookEntry.COLUMN_RATING };
+                BookEntry.COLUMN_PAGES,
+//                BookEntry.COLUMN_IMAGE,
+                BookEntry.COLUMN_RATING};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -213,5 +203,25 @@ public class CatalogActivity extends AppCompatActivity implements
     public void onLoaderReset(Loader<Cursor> loader) {
         // Callback called when the data needs to be deleted
         mCursorAdapter.swapCursor(null);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_reading) {
+
+        } else if (id == R.id.nav_read) {
+
+        } else if (id == R.id.nav_unread) {
+
+        } else if (id == R.id.nav_rate_app) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

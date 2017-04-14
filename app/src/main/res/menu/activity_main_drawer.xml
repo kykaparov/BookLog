@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_reading"
+            android:icon="@drawable/ic_folder_black_24dp"
+            android:title="@string/drawer_reading"/>
+        <item
+            android:id="@+id/nav_unread"
+            android:icon="@drawable/ic_folder_black_24dp"
+            android:title="@string/drawer_unread"/>
+        <item
+            android:id="@+id/nav_read"
+            android:icon="@drawable/ic_folder_black_24dp"
+            android:title="@string/drawer_read"/>
+    </group>
+
+    <item android:title="@string/rate_app">
+        <menu>
+            <item
+                android:id="@+id/nav_rate_app"
+                android:icon="@drawable/ic_grade_red_400_24dp"
+                android:title="@string/do_you_like_this_app"/>
+        </menu>
+    </item>
+
+</menu>

@@ -2,11 +2,13 @@ package com.example.kaparov.booklog;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.example.kaparov.booklog.data.BookContract.*;
@@ -59,34 +61,40 @@ public class BookCursorAdapter extends CursorAdapter {
         TextView titleTextView = (TextView) view.findViewById(R.id.book_title);
         TextView authorTextView = (TextView) view.findViewById(R.id.book_author);
         TextView categoryTextView = (TextView) view.findViewById(R.id.book_category);
+        ImageView imageView = (ImageView) view.findViewById(R.id.book_image);
         RatingBar ratingBar = (RatingBar) view.findViewById(R.id.book_rating);
 
         // Find the columns of book attributes that we're interested in
         int titleColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_TITLE);
         int authorColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_AUTHOR);
         int categoryColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_CATEGORY);
+        int pagesColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PAGES);
+//        int imageColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_IMAGE);
         int ratingColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_RATING);
 
-        // Read the pet attributes from the Cursor for the current book
+        // Read the book attributes from the Cursor for the current book
         String bookTitle = cursor.getString(titleColumnIndex);
         String bookAuthor = cursor.getString(authorColumnIndex);
         String bookCategory = cursor.getString(categoryColumnIndex);
-        int bookRating = cursor.getInt(ratingColumnIndex);
+        String bookPages = cursor.getString(pagesColumnIndex);
+//        byte[] bookImage = cursor.getBlob(imageColumnIndex);
+        float bookRating = cursor.getFloat(ratingColumnIndex);
 
 
-        if (TextUtils.isEmpty(bookAuthor)) {
-            bookAuthor = context.getString(R.string.unknown_author);
-        }
-
-        if (TextUtils.isEmpty(bookCategory)) {
-            bookCategory = context.getString(R.string.unknown_category);
-        }
+//        if (TextUtils.isEmpty(bookAuthor)) {
+//            bookAuthor = context.getString(R.string.unknown_author);
+//        }
+//
+//        if (TextUtils.isEmpty(bookCategory)) {
+//            bookCategory = context.getString(R.string.unknown_category);
+//        }
 
         // Update the TextViews with the attributes for the current book
         titleTextView.setText(bookTitle);
         authorTextView.setText(bookAuthor);
         categoryTextView.setText(bookCategory);
-        ratingBar.setNumStars(bookRating);
+//        imageView.insertImage(bookImage);
+        ratingBar.setRating(bookRating);
 
     }
 }

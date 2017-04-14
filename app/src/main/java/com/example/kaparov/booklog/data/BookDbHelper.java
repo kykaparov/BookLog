@@ -16,6 +16,8 @@ public class BookDbHelper extends SQLiteOpenHelper{
     public static final String DATABASE_NAME = "library.db";
 
     public static final int DATABASE_VERSION = 1;
+    private static final String SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS " + BookEntry.TABLE_NAME;
 
     /**
      * Constructs a new instance of {@link BookDbHelper}.
@@ -27,9 +29,6 @@ public class BookDbHelper extends SQLiteOpenHelper{
 
     }
 
-    private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + BookEntry.TABLE_NAME;
-
     /**
      * This is called when the database is created for the first time.
      */
@@ -40,7 +39,8 @@ public class BookDbHelper extends SQLiteOpenHelper{
                 BookEntry.COLUMN_TITLE + " TEXT NOT NULL," +
                 BookEntry.COLUMN_AUTHOR + " TEXT," +
                 BookEntry.COLUMN_CATEGORY + " TEXT," +
-                BookEntry.COLUMN_PAGES + " INTEGER NOT NULL," +
+                BookEntry.COLUMN_PAGES + " TEXT NOT NULL," +
+//                BookEntry.COLUMN_IMAGE + " BLOB NOT NULL, " +
                 BookEntry.COLUMN_RATING + " INTEGER NOT NULL DEFAULT 0)" ;
 
         // Execute the SQL statement

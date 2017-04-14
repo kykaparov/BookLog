@@ -30,7 +30,8 @@
         <activity
             android:name=".ScannerActivity"
             android:label="@string/scan_a_book"
-            android:parentActivityName=".CatalogActivity">
+            android:parentActivityName=".CatalogActivity"
+            android:screenOrientation="portrait">
         </activity>
         <provider
             android:name=".data.BookProvider"

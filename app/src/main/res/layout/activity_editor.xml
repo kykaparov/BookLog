@@ -4,14 +4,21 @@
     <!-- Layout for the editor -->
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:padding="@dimen/activity_margin"
         tools:context=".EditorActivity">
+
+        <ImageView
+            android:id="@+id/edit_book_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            tools:src="@mipmap/ic_launcher"/>
 
         <!-- Book category -->
         <LinearLayout
@@ -20,65 +27,58 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_height="wrap_content"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
             <!-- Label -->
             <TextView
                 android:id="@+id/book_label"
-                android:layout_height="0dp"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:text="@string/category_book"
-                android:textColor="@color/colorAccent"
-                android:fontFamily = "sans-serif-medium"
-                android:textAppearance = "?android:textAppearanceSmall"/>
-
-            <ImageView
-                android:id="@+id/book_image"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:src="@mipmap/ic_launcher"/>
+                android:fontFamily = "sans-serif-medium"
+                android:text="@string/category_book"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="@color/colorAccent"/>
 
             </LinearLayout>
 
             <!-- Input fields -->
             <LinearLayout
-                android:layout_height="wrap_content"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:paddingLeft="4dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingStart="4dp">
 
                 <!-- Title field -->
                 <EditText
                     android:id="@+id/edit_book_title"
+                    style="@style/EditorFieldStyle"
                     android:hint="@string/hint_book_title"
-                    android:inputType="textCapWords"
-                    style="@style/EditorFieldStyle" />
+                    android:inputType="textCapWords"/>
 
                 <!-- Author field -->
                 <EditText
                     android:id="@+id/edit_book_author"
+                    style="@style/EditorFieldStyle"
                     android:hint="@string/hint_book_author"
-                    android:inputType="textCapWords"
-                    style="@style/EditorFieldStyle" />
+                    android:inputType="textCapWords"/>
 
-                <!-- Author field -->
+                <!-- Category field -->
                 <EditText
                     android:id="@+id/edit_book_category"
+                    style="@style/EditorFieldStyle"
                     android:hint="@string/hint_book_category"
-                    android:inputType="textCapWords"
-                    style="@style/EditorFieldStyle" />
+                    android:inputType="textCapWords"/>
 
                 <!-- Pages field -->
                 <EditText
                     android:id="@+id/edit_pages"
+                    style="@style/EditorFieldStyle"
                     android:hint="@string/hint_pages"
-                    android:inputType="numberDecimal"
-                    style="@style/EditorFieldStyle" />
+                    android:inputType="numberDecimal"/>
 
 
             </LinearLayout>
@@ -94,25 +94,25 @@
 
             <!-- Label -->
             <TextView
-                android:text="@string/category_importance"
-                style="@style/CategoryStyle" />
+                style="@style/CategoryStyle"
+                android:text="@string/category_importance"/>
             <LinearLayout
-                android:layout_height="wrap_content"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:paddingLeft="4dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingStart="4dp">
 
                 <!-- Rating field -->
                 <RatingBar
                     android:id="@+id/edit_book_rating"
                     style="?android:attr/ratingBarStyleIndicator"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="fill_vertical|center_horizontal"
+                    android:isIndicator="false"
                     android:numStars="5"
-                    android:stepSize="1"
-                    android:isIndicator="false"/>
+                    android:stepSize="1"/>
             </LinearLayout>
         </LinearLayout>
 
