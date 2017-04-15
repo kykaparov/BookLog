@@ -40,7 +40,7 @@ public class BookDbHelper extends SQLiteOpenHelper{
                 BookEntry.COLUMN_AUTHOR + " TEXT," +
                 BookEntry.COLUMN_CATEGORY + " TEXT," +
                 BookEntry.COLUMN_PAGES + " TEXT NOT NULL," +
-//                BookEntry.COLUMN_IMAGE + " BLOB NOT NULL, " +
+                BookEntry.COLUMN_IMAGE + " BLOB, " +
                 BookEntry.COLUMN_RATING + " INTEGER NOT NULL DEFAULT 0)" ;
 
         // Execute the SQL statement

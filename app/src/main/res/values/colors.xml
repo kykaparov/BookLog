@@ -4,9 +4,14 @@
     <color name="colorPrimaryDark">#008e76</color>
     <color name="colorPrimaryLight">#5df2d6</color>
     <color name="colorAccent">#ff6d00</color>
+    <color name="colorPrimaryText">#FFFFFF</color>
+    <color name="colorSecondaryText">#757575</color>
 
     <!-- Fab -->
     <color name="fab_menu_colorNormal">@color/colorAccent</color>
     <color name="fab_menu_colorPressed">#c43c00</color>
     <color name="fab_menu_colorRipple">#B3E5FC</color>
+
+    <color name="actionbar_opacity">#33000000</color>
+
 </resources>

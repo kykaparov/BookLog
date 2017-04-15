@@ -30,5 +30,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.clans:fab:1.6.4'
+    compile 'me.dm7.barcodescanner:zxing:1.9'
     testCompile 'junit:junit:4.12'
 }

@@ -37,4 +37,7 @@
     <string name="do_you_like_this_app">Do you like this app?</string>
     <string name="scan_a_book">Scan a book</string>
     <string name="manually_add">Manually add</string>
+    <string name="single_scan_toolbar">Scan Barcode of Book</string>
+    <string name="menu_flash_off">Flash[OFF]</string>
+    <string name="menu_flash_on">Flash[ON]</string>
 </resources>

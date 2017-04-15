@@ -3,6 +3,7 @@ package com.example.kaparov.booklog;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +70,7 @@ public class BookCursorAdapter extends CursorAdapter {
         int authorColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_AUTHOR);
         int categoryColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_CATEGORY);
         int pagesColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PAGES);
-//        int imageColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_IMAGE);
+        int imageColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_IMAGE);
         int ratingColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_RATING);
 
         // Read the book attributes from the Cursor for the current book
@@ -77,8 +78,8 @@ public class BookCursorAdapter extends CursorAdapter {
         String bookAuthor = cursor.getString(authorColumnIndex);
         String bookCategory = cursor.getString(categoryColumnIndex);
         String bookPages = cursor.getString(pagesColumnIndex);
-//        byte[] bookImage = cursor.getBlob(imageColumnIndex);
         float bookRating = cursor.getFloat(ratingColumnIndex);
+        byte[] bookImage = cursor.getBlob(imageColumnIndex);
 
 
 //        if (TextUtils.isEmpty(bookAuthor)) {
@@ -93,8 +94,16 @@ public class BookCursorAdapter extends CursorAdapter {
         titleTextView.setText(bookTitle);
         authorTextView.setText(bookAuthor);
         categoryTextView.setText(bookCategory);
-//        imageView.insertImage(bookImage);
         ratingBar.setRating(bookRating);
+
+        Bitmap bitmap = Utility.getImage(bookImage);
+        imageView.setImageBitmap(bitmap);
+
+//        //photo.setImageURI(Uri.parse("Location");
+//        BitmapDrawable drawable = (BitmapDrawable) photo.getDrawable();
+//        Bitmap bitmap = drawable.getBitmap();
+//        bitmap = Bitmap.createScaledBitmap(bitmap, 70, 70, true);
+//        photo.setImageBitmap(bitmap);
 
     }
 }

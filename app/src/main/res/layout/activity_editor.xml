@@ -1,141 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- Layout for the editor -->
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/activity_horizontal_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".EditorActivity">
-
-    <ImageView
-        android:id="@+id/edit_book_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        tools:src="@drawable/ic_book_brown_900_24dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/book"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:textColor="@color/fab_menu_colorNormal"/>
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".EditorActivity">
 
-        <!-- Title field -->
+        <ImageView
+            android:id="@+id/edit_book_image"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_book_black_48dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/book"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/fab_menu_colorNormal"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/book_title"
-                android:textAppearance="?android:textAppearanceMedium"/>
-
-            <EditText
-                android:id="@+id/edit_book_title"
-                style="@style/EditorFieldStyle"
-                android:inputType="textCapWords"
-                android:textColor="@android:color/black"/>
-        </LinearLayout>
-
-        <!-- Author field -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
+            <!-- Title field -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/book_author"
-                android:textAppearance="?android:textAppearanceMedium"/>
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edit_book_author"
-                style="@style/EditorFieldStyle"
-                android:inputType="textCapWords"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/book_title"
+                    android:textAppearance="?android:textAppearanceMedium"/>
 
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/edit_book_title"
+                    style="@style/EditorFieldStyle"
+                    android:inputType="textCapWords"
+                    android:textColor="@android:color/black"/>
+            </LinearLayout>
 
-        <!-- Category field -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Author field -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/book_category"
-                android:textAppearance="?android:textAppearanceMedium"/>
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edit_book_category"
-                style="@style/EditorFieldStyle"
-                android:inputType="textCapWords"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/book_author"
+                    android:textAppearance="?android:textAppearanceMedium"/>
 
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/edit_book_author"
+                    style="@style/EditorFieldStyle"
+                    android:inputType="textCapWords"/>
 
-        <!-- Pages field -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Category field -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/book_pages"
-                android:textAppearance="?android:textAppearanceMedium"/>
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edit_book_pages"
-                style="@style/EditorFieldStyle"
-                android:inputType="numberDecimal"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/book_category"
+                    android:textAppearance="?android:textAppearanceMedium"/>
 
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/edit_book_category"
+                    style="@style/EditorFieldStyle"
+                    android:inputType="textCapWords"/>
 
-        <!-- Rating field -->
-        <LinearLayout
-            android:id="@+id/container_measurement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            </LinearLayout>
+
+            <!-- Pages field -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/book_pages"
+                    android:textAppearance="?android:textAppearanceMedium"/>
+
+                <EditText
+                    android:id="@+id/edit_book_pages"
+                    style="@style/EditorFieldStyle"
+                    android:inputType="numberDecimal"/>
+
+            </LinearLayout>
 
             <!-- Rating field -->
-            <TextView
-                style="@style/CategoryStyle"
-                android:text="@string/category_importance"/>
-
-            <RatingBar
-                android:id="@+id/edit_book_rating"
-                style="?android:attr/ratingBarStyleIndicator"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/container_measurement"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
-                android:isIndicator="false"
-                android:numStars="5"
-                android:stepSize="1"/>
+                android:orientation="horizontal">
+
+                <!-- Rating field -->
+                <TextView
+                    style="@style/CategoryStyle"
+                    android:text="@string/category_importance"/>
+
+                <RatingBar
+                    android:id="@+id/edit_book_rating"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:isIndicator="false"
+                    android:numStars="5"
+                    android:stepSize="1"/>
+
+            </LinearLayout>
 
         </LinearLayout>
-
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
 

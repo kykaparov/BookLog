@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,6 +33,8 @@ import com.example.kaparov.booklog.data.BookContract.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import static com.example.kaparov.booklog.R.id.imageView;
 
 /**
  * Allows user to create a new book or edit an existing one.
@@ -117,7 +121,17 @@ public class EditorActivity extends AppCompatActivity implements
         mImageView.setOnTouchListener(mTouchListener);
         mBookRating.setOnTouchListener(mTouchListener);
 
-        //Glide.with(this).load("http://goo.gl/gEgYUd").into(mImageView);
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Glide.with(EditorActivity.this).
+                        load("http://goo.gl/gEgYUd").
+                        asBitmap().
+                        into(mImageView);
+
+            }
+        });
+
 //        mImageView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -137,8 +151,12 @@ public class EditorActivity extends AppCompatActivity implements
         String authorString = mAuthorEditText.getText().toString().trim();
         String categoryString = mCategoryEditText.getText().toString().trim();
         String pagesString = mPagesEditText.getText().toString().trim();
-//        mImageView.get
         Float rating = mBookRating.getRating();
+
+        BitmapDrawable drawable = (BitmapDrawable) mImageView.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        byte[] imageByte = Utility.getBytes(bitmap);
+
 
         // Check if this is supposed to be a new book
         // and check if all the fields in the editor are blank
@@ -169,7 +187,7 @@ public class EditorActivity extends AppCompatActivity implements
         values.put(BookEntry.COLUMN_AUTHOR, authorString);
         values.put(BookEntry.COLUMN_CATEGORY, categoryString);
         values.put(BookEntry.COLUMN_PAGES, pagesString);
-//        values.put(BookEntry.COLUMN_IMAGE, pagesString);
+        values.put(BookEntry.COLUMN_IMAGE, imageByte);
         values.put(BookEntry.COLUMN_RATING, rating);
 
 
@@ -320,7 +338,7 @@ public class EditorActivity extends AppCompatActivity implements
                 BookEntry.COLUMN_AUTHOR,
                 BookEntry.COLUMN_CATEGORY,
                 BookEntry.COLUMN_PAGES,
-//                BookEntry.COLUMN_IMAGE,
+                BookEntry.COLUMN_IMAGE,
                 BookEntry.COLUMN_RATING };
 
         // This loader will execute the ContentProvider's query method on a background thread
@@ -347,7 +365,7 @@ public class EditorActivity extends AppCompatActivity implements
             int authorColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_AUTHOR);
             int categoryColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_CATEGORY);
             int pagesColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PAGES);
-//            int imageColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_IMAGE);
+            int imageColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_IMAGE);
             int ratingColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_RATING);
 
             // Extract out the value from the Cursor for the given column index
@@ -355,16 +373,19 @@ public class EditorActivity extends AppCompatActivity implements
             String bookAuthor = cursor.getString(authorColumnIndex);
             String bookCategory = cursor.getString(categoryColumnIndex);
             String bookPages = cursor.getString(pagesColumnIndex);
-//            byte[] bookImage = cursor.getBlob(imageColumnIndex);
             Float bookRating = cursor.getFloat(ratingColumnIndex);
+            byte[] bookImage = cursor.getBlob(imageColumnIndex);
 
             // Update the views on the screen with the values from the database
             mTitleEditText.setText(bookTitle);
             mAuthorEditText.setText(bookAuthor);
             mCategoryEditText.setText(bookCategory);
             mPagesEditText.setText(bookPages);
-//            imageView.insertImage(bookImage)
             mBookRating.setRating(bookRating);
+
+            Bitmap bitmap = Utility.getImage(bookImage);
+            mImageView.setImageBitmap(bitmap);
+
         }
     }
 
@@ -376,8 +397,10 @@ public class EditorActivity extends AppCompatActivity implements
         mAuthorEditText.setText("");
         mCategoryEditText.setText("");
         mPagesEditText.setText("");
-//        mImageView.setImageBitmap();
         mBookRating.setRating(0);
+
+//        Bitmap bitmap = Utility.getImage(null);
+//        mImageView.setImageBitmap(bitmap);
 
     }
 
