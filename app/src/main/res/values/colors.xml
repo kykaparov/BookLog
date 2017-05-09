@@ -12,6 +12,6 @@
     <color name="fab_menu_colorPressed">#c43c00</color>
     <color name="fab_menu_colorRipple">#B3E5FC</color>
 
-    <color name="actionbar_opacity">#33000000</color>
+    <!--<color name="actionbar_opacity">#33000000</color>-->
 
 </resources>

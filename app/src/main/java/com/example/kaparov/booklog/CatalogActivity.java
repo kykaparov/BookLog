@@ -183,6 +183,7 @@ public class CatalogActivity extends AppCompatActivity implements
                 BookEntry.COLUMN_PAGES,
                 BookEntry.COLUMN_IMAGE,
                 BookEntry.COLUMN_RATING};
+//                BookEntry.COLUMN_ISBN};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context

@@ -41,7 +41,8 @@ public class BookDbHelper extends SQLiteOpenHelper{
                 BookEntry.COLUMN_CATEGORY + " TEXT," +
                 BookEntry.COLUMN_PAGES + " TEXT NOT NULL," +
                 BookEntry.COLUMN_IMAGE + " BLOB, " +
-                BookEntry.COLUMN_RATING + " INTEGER NOT NULL DEFAULT 0)" ;
+                BookEntry.COLUMN_RATING + " INTEGER NOT NULL DEFAULT 0)";
+//                BookEntry.COLUMN_ISBN + " TEXT)";
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_ENTRIES);

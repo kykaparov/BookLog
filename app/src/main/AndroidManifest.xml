@@ -3,6 +3,7 @@
           package="com.example.kaparov.booklog">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -32,9 +33,9 @@
         <activity
             android:name=".ScannerActivity"
             android:label="@string/scan_a_book"
-            android:theme="@style/AppOverlayTheme"
             android:parentActivityName=".CatalogActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppOverlayTheme">
         </activity>
         <provider
             android:name=".data.BookProvider"

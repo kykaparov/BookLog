@@ -2,9 +2,14 @@ package com.example.kaparov.booklog;
 
 
 import android.Manifest;
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -23,16 +28,22 @@ import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class ScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
+public class ScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler,
+        LoaderManager.LoaderCallbacks<Book> {
+
     private static final String TAG = "ScannerActivity";
 
     private static final int CAMERA_PERMISSION = 1;
+    private static final int BOOK_LOADER_ID = 1;
 
+    private static final String BOOK_URL =
+            "https://www.googleapis.com/books/v1/volumes?q=isbn:";
 
     private static final String FLASH_STATE = "FLASH_STATE";
     private ZXingScannerView mScannerView;
     private boolean mFlash;
     private Toolbar mToolbar;
+    private String bookISBN;
 
     public static Intent newIntent(Context context){
         /** startMode is a number of 0,1,2
@@ -62,7 +73,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         setContentView(R.layout.activity_scanner);
 
         mToolbar = (Toolbar) findViewById(R.id.scannerToolbar);
-        mToolbar.setTitle(R.string.single_scan_toolbar);
+        mToolbar.setTitle(R.string.scan_toolbar);
         setSupportActionBar(mToolbar);
         final ActionBar ab = getSupportActionBar();
         if(ab != null) {
@@ -74,6 +85,8 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         contentFrame.addView(mScannerView);
         mScannerView.setResultHandler(this);
         mScannerView.setAutoFocus(true);
+
+
     }
 
     @Override
@@ -143,20 +156,15 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
 
     @Override
     public void handleResult(Result rawResult){
-        Toast.makeText(this, "Contents = " + rawResult.getText() +
-                ", Format = " + rawResult.getBarcodeFormat().toString(), Toast.LENGTH_SHORT).show();
-
-        Log.i(TAG,"ScanResult Contents = " + rawResult.getText() + ", Format = " + rawResult.getBarcodeFormat().toString());
-        mToolbar.setTitle(rawResult.getText());
-
-        // TODO: 4/14/17
-//        DoubanFetcher fetcher = new DoubanFetcher();
-//        fetcher.getBookInfo(getApplicationContext(),rawResult.getText());
+//        Toast.makeText(this, "Contents = " + rawResult.getText() +
+//                ", Format = " + rawResult.getBarcodeFormat().toString(), Toast.LENGTH_SHORT).show();
+//
+//        Log.i(TAG,"ScanResult Contents = " + rawResult.getText() + ", Format = " + rawResult.getBarcodeFormat().toString());
+//        mToolbar.setTitle(rawResult.getText());
 
         // Note:
         // * Wait 2 seconds to resume the preview.
         // * On older devices continuously stopping and resuming camera preview can result in freezing the app.
-        // * I don't know why this is the case but I don't have the time to figure out.
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -164,6 +172,32 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
                 mScannerView.resumeCameraPreview(ScannerActivity.this);
             }
         }, 2000);
+
+        bookISBN = rawResult.getText();
+
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        // Get details on the currently active default data network
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        // If there is a network connection, fetch data
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // Get a reference to the LoaderManager, in order to interact with loaders.
+            LoaderManager loaderManager = getLoaderManager();
+
+            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+            // because this activity implements the LoaderCallbacks interface).
+            loaderManager.initLoader(BOOK_LOADER_ID, null, this);
+        } else {
+
+            // Update empty state with no connection error message
+//            mEmptyStateTextView.setText(R.string.no_internet_connection);
+        }
+
+
 
     }
     @Override
@@ -178,6 +212,34 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         }
     }
 
+    @Override
+    public Loader<Book> onCreateLoader(int i, Bundle bundle) {
+
+        Uri baseUri = Uri.parse(BOOK_URL + bookISBN);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        return new BookLoader(this, uriBuilder.toString());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Book> loader, Book book) {
+
+        if (!book.isInGoogleBooks())
+            Toast.makeText(this, "We can't provide any info about this book, ISBN: " + bookISBN + "\n\t Add book manually.", Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(ScannerActivity.this, EditorActivity.class);
+        intent.putExtra("isInGoogleBooks", book.isInGoogleBooks());
+        intent.putExtra("title", book.getTitle());
+        intent.putExtra("author", book.getAuthor());
+        intent.putExtra("category", book.getCategory());
+        intent.putExtra("pages", ("" + book.getPages()));
+        intent.putExtra("image", book.getImageUrl());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Book> loader) {
+    }
 
 
 

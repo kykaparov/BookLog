@@ -3,8 +3,6 @@ package com.example.kaparov.booklog;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +70,8 @@ public class BookCursorAdapter extends CursorAdapter {
         int pagesColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PAGES);
         int imageColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_IMAGE);
         int ratingColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_RATING);
+//        int isbnColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_ISBN);
+
 
         // Read the book attributes from the Cursor for the current book
         String bookTitle = cursor.getString(titleColumnIndex);
@@ -80,6 +80,7 @@ public class BookCursorAdapter extends CursorAdapter {
         String bookPages = cursor.getString(pagesColumnIndex);
         float bookRating = cursor.getFloat(ratingColumnIndex);
         byte[] bookImage = cursor.getBlob(imageColumnIndex);
+//        String bookIsbn = cursor.getString(isbnColumnIndex);
 
 
 //        if (TextUtils.isEmpty(bookAuthor)) {
@@ -96,7 +97,8 @@ public class BookCursorAdapter extends CursorAdapter {
         categoryTextView.setText(bookCategory);
         ratingBar.setRating(bookRating);
 
-        Bitmap bitmap = Utility.getImage(bookImage);
+        Bitmap bitmap = UtilsBitmap.getImage(bookImage);
+//                bitmap = Bitmap.createScaledBitmap(bitmap, 70, 70, true);  // TODO: 4/15/17
         imageView.setImageBitmap(bitmap);
 
 //        //photo.setImageURI(Uri.parse("Location");

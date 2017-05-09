@@ -13,12 +13,10 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -30,11 +28,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.kaparov.booklog.data.BookContract.*;
-
-import java.io.IOException;
-import java.io.InputStream;
-
-import static com.example.kaparov.booklog.R.id.imageView;
 
 /**
  * Allows user to create a new book or edit an existing one.
@@ -85,6 +78,7 @@ public class EditorActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         mCurrentBookUri = intent.getData();
 
+
         // If the intent DOES NOT contain a book content URI, then we know that we are
         // creating a new book.
         if (mCurrentBookUri == null) {
@@ -111,6 +105,31 @@ public class EditorActivity extends AppCompatActivity implements
         mImageView = (ImageView) findViewById(R.id.edit_book_image);
         mBookRating = (RatingBar) findViewById(R.id.edit_book_rating);
 
+        //Extract values from Scanner Avtivity
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+
+            String titleExtra = extras.getString("title");
+            String authorExtra = extras.getString("author");
+            String categoryExtra = extras.getString("category");
+            String pagesExtra = extras.getString("pages");
+            String imageExtra = extras.getString("image");
+
+            mTitleEditText.setText(titleExtra);
+            mAuthorEditText.setText(authorExtra);
+            mCategoryEditText.setText(categoryExtra);
+            mPagesEditText.setText(pagesExtra);
+
+            if (extras.getBoolean("isInGoogleBooks")) {
+                Glide.with(EditorActivity.this).
+                        load(imageExtra).
+                        asBitmap().
+                        into(mImageView);
+            }
+
+        }
+
+
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
         // or not, if the user tries to leave the editor without saving.
@@ -121,16 +140,6 @@ public class EditorActivity extends AppCompatActivity implements
         mImageView.setOnTouchListener(mTouchListener);
         mBookRating.setOnTouchListener(mTouchListener);
 
-        mImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Glide.with(EditorActivity.this).
-                        load("http://goo.gl/gEgYUd").
-                        asBitmap().
-                        into(mImageView);
-
-            }
-        });
 
 //        mImageView.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -155,7 +164,7 @@ public class EditorActivity extends AppCompatActivity implements
 
         BitmapDrawable drawable = (BitmapDrawable) mImageView.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
-        byte[] imageByte = Utility.getBytes(bitmap);
+        byte[] imageByte = UtilsBitmap.getBytes(bitmap);
 
 
         // Check if this is supposed to be a new book
@@ -339,7 +348,8 @@ public class EditorActivity extends AppCompatActivity implements
                 BookEntry.COLUMN_CATEGORY,
                 BookEntry.COLUMN_PAGES,
                 BookEntry.COLUMN_IMAGE,
-                BookEntry.COLUMN_RATING };
+                BookEntry.COLUMN_RATING};
+//                BookEntry.COLUMN_ISBN };
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -367,6 +377,7 @@ public class EditorActivity extends AppCompatActivity implements
             int pagesColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PAGES);
             int imageColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_IMAGE);
             int ratingColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_RATING);
+//            int isbnColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_ISBN);
 
             // Extract out the value from the Cursor for the given column index
             String bookTitle = cursor.getString(titleColumnIndex);
@@ -375,6 +386,7 @@ public class EditorActivity extends AppCompatActivity implements
             String bookPages = cursor.getString(pagesColumnIndex);
             Float bookRating = cursor.getFloat(ratingColumnIndex);
             byte[] bookImage = cursor.getBlob(imageColumnIndex);
+//            String bookIsbn = cursor.getString(isbnColumnIndex);
 
             // Update the views on the screen with the values from the database
             mTitleEditText.setText(bookTitle);
@@ -383,7 +395,7 @@ public class EditorActivity extends AppCompatActivity implements
             mPagesEditText.setText(bookPages);
             mBookRating.setRating(bookRating);
 
-            Bitmap bitmap = Utility.getImage(bookImage);
+            Bitmap bitmap = UtilsBitmap.getImage(bookImage);
             mImageView.setImageBitmap(bitmap);
 
         }
@@ -399,7 +411,7 @@ public class EditorActivity extends AppCompatActivity implements
         mPagesEditText.setText("");
         mBookRating.setRating(0);
 
-//        Bitmap bitmap = Utility.getImage(null);
+//        Bitmap bitmap = UtilsBitmap.getImage(null);
 //        mImageView.setImageBitmap(bitmap);
 
     }
@@ -489,13 +501,17 @@ public class EditorActivity extends AppCompatActivity implements
         finish();
     }
 
+
     // Choose an image from Gallery
-    void openImageChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_VIEW);
-        startActivityForResult(Intent.createChooser(intent, "Select a book image"), SELECT_PICTURE);
-    }
+//    void openImageChooser() {
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_VIEW);
+//        startActivityForResult(Intent.createChooser(intent, "Select a book image"), SELECT_PICTURE);
+//    }
+
+
+
 
 ////    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 ////        if (resultCode == RESULT_OK) {

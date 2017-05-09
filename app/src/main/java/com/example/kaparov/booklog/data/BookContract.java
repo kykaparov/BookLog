@@ -54,9 +54,7 @@ public class BookContract {
         public static final String COLUMN_PAGES = "pages";
         public static final String COLUMN_IMAGE = "image";
         public static final String COLUMN_RATING = "rating";
-//        public static final String COLUMN_PUBLISHED_DATE = "published date";
 //        public static final String COLUMN_ISBN = "isbn";
-
 
     }
 }
