@@ -49,11 +49,8 @@ public class CatalogActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
         final FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.fabmenu);
         fabMenu.setClosedOnTouchOutside(true);
-
 
         final FloatingActionButton fabBtnScanner = (FloatingActionButton) findViewById(R.id.fab_scanner);
         fabBtnScanner.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +61,6 @@ public class CatalogActivity extends AppCompatActivity implements
                 startActivity(intent);
             }
         });
-
 
         final FloatingActionButton fabBtnAdd = (FloatingActionButton) findViewById(R.id.fab_add);
         fabBtnAdd.setOnClickListener(new View.OnClickListener() {
@@ -85,8 +81,6 @@ public class CatalogActivity extends AppCompatActivity implements
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ImageView itemMenuImage = (ImageView) findViewById(R.id.item_menu_image);
-
         // Find the ListView which will be populated with the book data
         ListView bookListView = (ListView) findViewById(R.id.listview);
 
@@ -99,12 +93,11 @@ public class CatalogActivity extends AppCompatActivity implements
         mCursorAdapter = new BookCursorAdapter(this, null);
         bookListView.setAdapter(mCursorAdapter);
 
-
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // Create new intent to go to {@link EditorActivity}
-                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+                Intent intent = new Intent(CatalogActivity.this, BookInfoActivity.class);
 
                 // Form the content URI that represents the specific book that was clicked on,
                 // by appending the "id" (passed as input to this method) onto the

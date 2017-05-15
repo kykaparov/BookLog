@@ -13,14 +13,13 @@
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".EditorActivity">
+        tools:context=".BookInfoActivity">
 
         <ImageView
-            android:id="@+id/edit_book_image"
+            android:id="@+id/info_book_image"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_book_grey_600_48dp"/>
+            android:layout_gravity="center_horizontal"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,13 +31,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     style="@style/CategoryStyle"
                     android:text="@string/book_title"/>
-                <EditText
-                    android:id="@+id/edit_book_title"
+
+                <TextView
+                    android:id="@+id/info_book_title"
                     style="@style/FieldStyle"
-                    android:inputType="textCapWords"/>
+                    tools:text="Android"/>
             </LinearLayout>
 
             <!-- Author field -->
@@ -46,13 +47,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     style="@style/CategoryStyle"
                     android:text="@string/book_author"/>
-                <EditText
-                    android:id="@+id/edit_book_author"
+
+                <TextView
+                    android:id="@+id/info_book_author"
                     style="@style/FieldStyle"
-                    android:inputType="textCapWords"/>
+                    tools:text="Android"/>
             </LinearLayout>
 
             <!-- Category field -->
@@ -60,27 +63,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     style="@style/CategoryStyle"
                     android:text="@string/book_category"/>
-                <EditText
-                    android:id="@+id/edit_book_category"
-                    style="@style/FieldStyle"
-                    android:inputType="textCapWords"/>
-            </LinearLayout>
 
-            <!-- Pages field -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
                 <TextView
-                    style="@style/CategoryStyle"
-                    android:text="@string/book_pages"/>
-                <EditText
-                    android:id="@+id/edit_book_pages"
+                    android:id="@+id/info_book_category"
                     style="@style/FieldStyle"
-                    android:inputType="numberDecimal"/>
+                    tools:text="Android"/>
             </LinearLayout>
 
             <!-- Rating field -->
@@ -88,22 +79,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     style="@style/CategoryStyle"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
                     android:text="@string/category_priority"/>
+
                 <RatingBar
-                    android:id="@+id/edit_book_rating"
+                    android:id="@+id/info_book_rating"
                     style="?android:attr/ratingBarStyleIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
-                    android:isIndicator="false"
+                    android:isIndicator="true"
                     android:numStars="5"
                     android:stepSize="1"/>
-
             </LinearLayout>
 
         </LinearLayout>
@@ -111,4 +103,3 @@
     </LinearLayout>
 
 </ScrollView>
-

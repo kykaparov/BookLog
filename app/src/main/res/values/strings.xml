@@ -3,11 +3,11 @@
     <string name="add_new_book">Add a new book</string>
     <string name="empty_view">Here can be your book!</string>
     <string name="book">Book</string>
-    <string name="book_title">Title</string>
-    <string name="book_author">Author</string>
-    <string name="book_category">Category</string>
-    <string name="book_pages">Pages</string>
-    <string name="category_importance">Importance</string>
+    <string name="book_title">Title:</string>
+    <string name="book_author">Author(s):</string>
+    <string name="book_category">Category:</string>
+    <string name="book_pages">Pages:</string>
+    <string name="category_priority">Priority</string>
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
     <string name="action_set_notification">Set notification</string>
@@ -40,4 +40,7 @@
     <string name="scan_toolbar">Scan Barcode of Book</string>
     <string name="menu_flash_off">Flash[OFF]</string>
     <string name="menu_flash_on">Flash[ON]</string>
+    <string name="book_info">Book info</string>
+    <string name="action_edit_book">Edit</string>
+    <string name="action_add_note">Add note</string>
 </resources>

@@ -36,25 +36,13 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
     private static final int CAMERA_PERMISSION = 1;
     private static final int BOOK_LOADER_ID = 1;
 
-    private static final String BOOK_URL =
-            "https://www.googleapis.com/books/v1/volumes?q=isbn:";
+    private static final String BOOK_URL = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
 
     private static final String FLASH_STATE = "FLASH_STATE";
     private ZXingScannerView mScannerView;
     private boolean mFlash;
     private Toolbar mToolbar;
     private String bookISBN;
-
-    public static Intent newIntent(Context context){
-        /** startMode is a number of 0,1,2
-         * 0: start without a camera
-         * 1: start with camera in single book mode
-         * 2: start with camera in batch mode
-         */
-        Intent intent = new Intent(context,ScannerActivity.class);
-        return intent;
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -85,8 +73,6 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         contentFrame.addView(mScannerView);
         mScannerView.setResultHandler(this);
         mScannerView.setAutoFocus(true);
-
-
     }
 
     @Override
@@ -103,10 +89,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
 
         MenuItemCompat.setShowAsAction(menuItem, MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-
-
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
@@ -130,7 +113,6 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         mScannerView.stopCamera();
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -148,11 +130,9 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
                     item.setIcon(R.drawable.ic_flash_off);}
                 mScannerView.setFlash(mFlash);
                 return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void handleResult(Result rawResult){
@@ -162,9 +142,6 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
 //        Log.i(TAG,"ScanResult Contents = " + rawResult.getText() + ", Format = " + rawResult.getBarcodeFormat().toString());
 //        mToolbar.setTitle(rawResult.getText());
 
-        // Note:
-        // * Wait 2 seconds to resume the preview.
-        // * On older devices continuously stopping and resuming camera preview can result in freezing the app.
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -196,10 +173,8 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
             // Update empty state with no connection error message
 //            mEmptyStateTextView.setText(R.string.no_internet_connection);
         }
-
-
-
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,  String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -225,7 +200,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
     public void onLoadFinished(Loader<Book> loader, Book book) {
 
         if (!book.isInGoogleBooks())
-            Toast.makeText(this, "We can't provide any info about this book, ISBN: " + bookISBN + "\n\t Add book manually.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "No info about this book, ISBN: " + bookISBN + "\nAdd book manually.", Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(ScannerActivity.this, EditorActivity.class);
         intent.putExtra("isInGoogleBooks", book.isInGoogleBooks());
@@ -234,6 +209,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         intent.putExtra("category", book.getCategory());
         intent.putExtra("pages", ("" + book.getPages()));
         intent.putExtra("image", book.getImageUrl());
+        finish();
         startActivity(intent);
     }
 

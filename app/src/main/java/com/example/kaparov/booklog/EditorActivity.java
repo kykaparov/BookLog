@@ -1,6 +1,5 @@
 package com.example.kaparov.booklog;
 
-
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -43,7 +42,6 @@ public class EditorActivity extends AppCompatActivity implements
     /** Content URI for the existing book (null if it's a new book) */
     private Uri mCurrentBookUri;
 
-
     private EditText mTitleEditText;
     private EditText mAuthorEditText;
     private EditText mCategoryEditText;
@@ -77,7 +75,6 @@ public class EditorActivity extends AppCompatActivity implements
         // in order to figure out if we're creating a new book or editing an existing one.
         Intent intent = getIntent();
         mCurrentBookUri = intent.getData();
-
 
         // If the intent DOES NOT contain a book content URI, then we know that we are
         // creating a new book.
@@ -126,9 +123,7 @@ public class EditorActivity extends AppCompatActivity implements
                         asBitmap().
                         into(mImageView);
             }
-
         }
-
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -139,7 +134,6 @@ public class EditorActivity extends AppCompatActivity implements
         mPagesEditText.setOnTouchListener(mTouchListener);
         mImageView.setOnTouchListener(mTouchListener);
         mBookRating.setOnTouchListener(mTouchListener);
-
 
 //        mImageView.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -165,7 +159,6 @@ public class EditorActivity extends AppCompatActivity implements
         BitmapDrawable drawable = (BitmapDrawable) mImageView.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         byte[] imageByte = UtilsBitmap.getBytes(bitmap);
-
 
         // Check if this is supposed to be a new book
         // and check if all the fields in the editor are blank
@@ -198,7 +191,6 @@ public class EditorActivity extends AppCompatActivity implements
         values.put(BookEntry.COLUMN_PAGES, pagesString);
         values.put(BookEntry.COLUMN_IMAGE, imageByte);
         values.put(BookEntry.COLUMN_RATING, rating);
-
 
         // Determine if this is a new or existing book by checking if mCurrentBookUri is null or not
         if (mCurrentBookUri == null) {
@@ -234,10 +226,8 @@ public class EditorActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
             }
         }
-
         return 0;
     }
-
 
         @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -353,7 +343,7 @@ public class EditorActivity extends AppCompatActivity implements
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
-                mCurrentBookUri,  // Provider content URI to query
+                mCurrentBookUri,        // Provider content URI to query
                 projection,             // Columns to include in the resulting Cursor
                 null,                   // No selection clause
                 null,                   // No selection arguments
@@ -496,7 +486,6 @@ public class EditorActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
             }
         }
-
         // Close the activity
         finish();
     }

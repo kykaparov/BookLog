@@ -156,6 +156,12 @@ public final class UtilsQuery {
         }
 
         Book book = null;
+        String title;
+        String authors;
+        String category;
+        int pages;
+        String imageUrl;
+
 
         // Try to parse the JSON response string. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
@@ -165,7 +171,7 @@ public final class UtilsQuery {
 
             if (baseJsonResponse.has("items")) {
 
-                //isInGoogleBooks = true;
+                //if isInGoogleBooks = true;
 
                 JSONArray bookArray = baseJsonResponse.getJSONArray("items");
 
@@ -173,32 +179,44 @@ public final class UtilsQuery {
 
                 JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
 
-                String title = volumeInfo.getString("title") + " " + volumeInfo.getString("subtitle");
+                if (volumeInfo.has("subtitle"))
+                    title = volumeInfo.getString("title") + " " + volumeInfo.getString("subtitle");
+                else
+                    title = volumeInfo.getString("title");
 
-                JSONArray authorArray = volumeInfo.getJSONArray("authors");
-                String authors = authorArray.getString(0);
-                for (int i = 1; i < authorArray.length(); i++) {
-                    authors += " " + authorArray.getString(i);
-                }
+                if (volumeInfo.has("authors")) {
+                    JSONArray authorArray = volumeInfo.getJSONArray("authors");
+                    authors = authorArray.getString(0);
+                    for (int i = 1; i < authorArray.length(); i++) {
+                        authors += " " + authorArray.getString(i);
+                    }
+                } else authors = "";
 
-                JSONArray categoryArray = volumeInfo.getJSONArray("categories");
-                String category = categoryArray.getString(0);
-                for (int i = 1; i < categoryArray.length(); i++) {
-                    category += " " + categoryArray.getString(i);
-                }
+                if (volumeInfo.has("categories")) {
+                    JSONArray categoryArray = volumeInfo.getJSONArray("categories");
+                    category = categoryArray.getString(0);
+                    for (int i = 1; i < categoryArray.length(); i++) {
+                        category += " " + categoryArray.getString(i);
+                    }
+                } else category = "";
 
-                int pages = volumeInfo.getInt("pageCount");
+                if (volumeInfo.has("pageCount"))
+                    pages = volumeInfo.getInt("pageCount");
+                else
+                    pages = 0;
 
-                JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-                String imageUrl = imageLinks.getString("smallThumbnail");
-                if (imageLinks.getString("smallThumbnail") == null)
-                    imageUrl = imageLinks.getString("thumbnail");
+                if (volumeInfo.has("pageCount")) {
+                    JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
+                    imageUrl = imageLinks.getString("smallThumbnail");
+                    if (imageLinks.getString("smallThumbnail") == null)
+                        imageUrl = imageLinks.getString("thumbnail");
+                } else imageUrl = "";
 
                 // Create a new {@link Book} object from the JSON response.
                 book = new Book(true, title, authors, category, pages, imageUrl);
 
             } else {
-                //isInGoogleBooks = false;
+                //if isInGoogleBooks = false;
                 book = new Book(false, null, null, null, 0, null);
             }
 
