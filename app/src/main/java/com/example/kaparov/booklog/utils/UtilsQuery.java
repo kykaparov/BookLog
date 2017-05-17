@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.kaparov.booklog;
+package com.example.kaparov.booklog.utils;
 
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.example.kaparov.booklog.Book;
 
 import org.json.JSONArray;
 import org.json.JSONException;

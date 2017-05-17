@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.example.kaparov.booklog.data.BookContract.*;
+import com.example.kaparov.booklog.utils.UtilsBitmap;
 
 
 /**

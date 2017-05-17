@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog;
+package com.example.kaparov.booklog.activities;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
@@ -12,18 +12,18 @@ import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kaparov.booklog.R;
 import com.example.kaparov.booklog.data.BookContract;
+import com.example.kaparov.booklog.utils.UtilsBitmap;
 
-public class BookInfoActivity extends AppCompatActivity implements
+public class InfoActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
@@ -44,7 +44,7 @@ public class BookInfoActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_info);
+        setContentView(R.layout.activity_info);
 
         //Set title of activity
         setTitle(getString(R.string.book_info));
@@ -157,7 +157,7 @@ public class BookInfoActivity extends AppCompatActivity implements
             // Respond to a click on the "Save" menu option
             case R.id.action_edit_book:
                 // Create new intent to go to {@link EditorActivity}
-                Intent intent = new Intent(BookInfoActivity.this, EditorActivity.class);
+                Intent intent = new Intent(InfoActivity.this, EditorActivity.class);
 
                 // Set the URI on the data field of the intent
                 intent.setData(mCurrentBookUri);
@@ -175,7 +175,7 @@ public class BookInfoActivity extends AppCompatActivity implements
 
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(BookInfoActivity.this);
+                NavUtils.navigateUpFromSameTask(InfoActivity.this);
                 return true;
         }
         return super.onOptionsItemSelected(item);

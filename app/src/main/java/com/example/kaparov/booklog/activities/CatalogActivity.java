@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog;
+package com.example.kaparov.booklog.activities;
 
 import android.app.LoaderManager;
 import android.content.ContentUris;
@@ -8,7 +8,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,9 +18,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.example.kaparov.booklog.BookCursorAdapter;
+import com.example.kaparov.booklog.R;
 import com.example.kaparov.booklog.data.BookContract.*;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -39,7 +39,7 @@ public class CatalogActivity extends AppCompatActivity implements
     private static final int BOOK_LOADER = 0;
 
     /** Adapter for the ListView */
-    BookCursorAdapter  mCursorAdapter;
+    BookCursorAdapter mCursorAdapter;
 
 
     @Override
@@ -97,7 +97,7 @@ public class CatalogActivity extends AppCompatActivity implements
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // Create new intent to go to {@link EditorActivity}
-                Intent intent = new Intent(CatalogActivity.this, BookInfoActivity.class);
+                Intent intent = new Intent(CatalogActivity.this, InfoActivity.class);
 
                 // Form the content URI that represents the specific book that was clicked on,
                 // by appending the "id" (passed as input to this method) onto the

@@ -1,31 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e5e5e5"
-    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.kaparov.booklog.CatalogActivity"
+    tools:context="com.example.kaparov.booklog.activities.CatalogActivity"
     tools:showIn="@layout/activity_catalog">
 
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:divider="@null"
         android:dividerHeight="0dp"/>
 
     <!-- Empty view is only visible when the list has no items. -->
-    <TextView
+    <RelativeLayout
         android:id="@+id/empty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textAppearance="?android:textAppearanceMedium"/>
+        android:layout_centerInParent="true">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/empty_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:src="@drawable/ic_storage_black_48dp"/>
+
+        <TextView
+            android:id="@+id/empty_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/empty_image"
+            android:layout_centerHorizontal="true"
+            android:text="@string/empty_view_title_text"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/colorSecondaryText"/>
+
+        <TextView
+            android:id="@+id/empty_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/empty_title"
+            android:layout_centerHorizontal="true"
+            android:text="@string/empty_view_subtitle_text"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/colorSecondaryText"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

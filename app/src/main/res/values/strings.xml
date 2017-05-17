@@ -1,24 +1,45 @@
 <resources>
     <string name="app_name">Books Log</string>
-    <string name="add_new_book">Add a new book</string>
-    <string name="empty_view">Here can be your book!</string>
+    <string name="empty_view_title_text">Here can be</string>
+    <string name="empty_view_subtitle_text">your books!</string>
     <string name="book">Book</string>
     <string name="book_title">Title:</string>
     <string name="book_author">Author(s):</string>
     <string name="book_category">Category:</string>
     <string name="book_pages">Pages:</string>
-    <string name="category_priority">Priority</string>
-    <string name="action_save">Save</string>
-    <string name="action_delete">Delete</string>
-    <string name="action_set_notification">Set notification</string>
-    <string name="action_set_progresss">Set current page</string>
+    <string name="category_priority">Priority:</string>
     <string name="editor_insert_book_failed">Error with saving book</string>
     <string name="editor_insert_book_successful">Book saved</string>
     <string name="unknown_author">Unknown author</string>
     <string name="unknown_category">Unknown category</string>
-    <string name="edit_book">Edit the book</string>
     <string name="editor_update_book_failed">Error with updating book</string>
     <string name="editor_update_book_successful">Book updated</string>
+
+    <!--Navigationbar-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="drawer_reading">Reading now</string>
+    <string name="drawer_read">To read</string>
+    <string name="drawer_unread">Have read</string>
+    <string name="rate_app">Rate app</string>
+    <string name="do_you_like_this_app">Do you like this app?</string>
+
+    <!--Toolbar-->
+    <string name="add_new_book">Add a new book</string>
+    <string name="edit_book">Edit the book</string>
+    <string name="book_info">Book info</string>
+    <string name="scan_toolbar">Scan barcode</string>
+    <string name="scan_a_book">Scan a book</string>
+    <string name="search_hint">Enter ISBN numbers</string>
+    <string name="manually_add">Manually add</string>
+    <string name="menu_flash_off">Flash[OFF]</string>
+    <string name="menu_flash_on">Flash[ON]</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit_book">Edit</string>
+    <string name="action_add_note">Add note</string>
+    <string name="action_set_notification">Set notification</string>
+    <string name="action_set_progresss">Set current page</string>
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep Editing</string>
@@ -28,19 +49,23 @@
     <string name="editor_delete_book_failed">Error with deleting book</string>
     <string name="editor_delete_book_successful">Book deleted</string>
     <string name="toast_require">Book requires a title and pages</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="drawer_reading">Reading now</string>
-    <string name="drawer_read">To read</string>
-    <string name="drawer_unread">Have read</string>
-    <string name="rate_app">Rate app</string>
-    <string name="do_you_like_this_app">Do you like this app?</string>
-    <string name="scan_a_book">Scan a book</string>
-    <string name="manually_add">Manually add</string>
-    <string name="scan_toolbar">Scan Barcode of Book</string>
-    <string name="menu_flash_off">Flash[OFF]</string>
-    <string name="menu_flash_on">Flash[ON]</string>
-    <string name="book_info">Book info</string>
-    <string name="action_edit_book">Edit</string>
-    <string name="action_add_note">Add note</string>
+
+
+    <!--Cover change-->
+    <string name="cover_change_dialog_title">Change book cover from:</string>
+    <string-array name="cover_change_dialog_list">
+        <item>Camera</item>
+        <item>Gallery</item>
+    </string-array>
+    <string name="cover_change_no_camera_app">No Camera app installed!</string>
+    <string name="cover_change_no_choose_picture_app">No supported picture chooser in your device!</string>
+    <string name="cover_change_camera_permission_denied">You need to grant Camera permission to take new pictures!</string>
+    <string name="cover_change_fail">Something wrong when processing image! Please check the log and contact the developer!</string>
+
+    <string name="title_activity_search_results">Search results</string>
+
+    <string name="search_isbn_manually">Search a book by ISBN</string>
+    <string name="input_prefill"></string>
+
+
 </resources>

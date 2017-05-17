@@ -6,6 +6,8 @@
     <color name="colorAccent">#ff6d00</color>
     <color name="colorPrimaryText">#FFFFFF</color>
     <color name="colorSecondaryText">#757575</color>
+    <color name="colorBlackText">#000000</color>
+    <color name="colorGrey">#c8c8c8</color>
 
     <!-- Fab -->
     <color name="fab_menu_colorNormal">@color/colorAccent</color>

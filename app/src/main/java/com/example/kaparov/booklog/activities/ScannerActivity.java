@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog;
+package com.example.kaparov.booklog.activities;
 
 
 import android.Manifest;
@@ -18,12 +18,17 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.example.kaparov.booklog.Book;
+import com.example.kaparov.booklog.BookLoader;
+import com.example.kaparov.booklog.R;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -77,6 +82,8 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+
         MenuItem menuItem;
 
         if(mFlash) {
@@ -90,6 +97,30 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         MenuItemCompat.setShowAsAction(menuItem, MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.menu_simple_add_flash:
+                mFlash = !mFlash;
+                if(mFlash) {
+                    item.setTitle(R.string.menu_flash_on);
+                    item.setIcon(R.drawable.ic_flash_on);
+                } else {
+                    item.setTitle(R.string.menu_flash_off);
+                    item.setIcon(R.drawable.ic_flash_off);}
+                mScannerView.setFlash(mFlash);
+                return true;
+            case R.id.action_search:
+                searchIsbnDialog();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -114,34 +145,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.menu_simple_add_flash:
-                mFlash = !mFlash;
-                if(mFlash) {
-                    item.setTitle(R.string.menu_flash_on);
-                    item.setIcon(R.drawable.ic_flash_on);
-                } else {
-                    item.setTitle(R.string.menu_flash_off);
-                    item.setIcon(R.drawable.ic_flash_off);}
-                mScannerView.setFlash(mFlash);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void handleResult(Result rawResult){
-//        Toast.makeText(this, "Contents = " + rawResult.getText() +
-//                ", Format = " + rawResult.getBarcodeFormat().toString(), Toast.LENGTH_SHORT).show();
-//
-//        Log.i(TAG,"ScanResult Contents = " + rawResult.getText() + ", Format = " + rawResult.getBarcodeFormat().toString());
-//        mToolbar.setTitle(rawResult.getText());
-
+    public void handleResult(Result rawResult) {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -149,8 +153,29 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
                 mScannerView.resumeCameraPreview(ScannerActivity.this);
             }
         }, 2000);
+        handleSearch(rawResult.getText());
+    }
 
-        bookISBN = rawResult.getText();
+    private void searchIsbnDialog() {
+        new MaterialDialog.Builder(this)
+                .title(R.string.search_isbn_manually)
+                .titleColorRes(R.color.colorBlackText)
+                .backgroundColorRes(R.color.colorPrimaryText)
+                .contentColorRes(R.color.colorBlackText)
+                .positiveColorRes(R.color.colorAccent)
+                .widgetColorRes(R.color.colorAccent)
+                .inputType(InputType.TYPE_CLASS_NUMBER)
+                .input(R.string.search_hint, R.string.input_prefill, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        handleSearch(input.toString());
+
+                    }
+                }).show();
+    }
+
+    private void handleSearch(String query) {
+        bookISBN = query;
 
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -173,6 +198,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
             // Update empty state with no connection error message
 //            mEmptyStateTextView.setText(R.string.no_internet_connection);
         }
+
     }
 
     @Override
@@ -216,9 +242,4 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
     @Override
     public void onLoaderReset(Loader<Book> loader) {
     }
-
-
-
-
-
 }

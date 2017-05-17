@@ -3,6 +3,8 @@ package com.example.kaparov.booklog;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
+import com.example.kaparov.booklog.utils.UtilsQuery;
+
 /**
  * Loads a book by using an AsyncTask to perform the
  * network request to the given URL.
