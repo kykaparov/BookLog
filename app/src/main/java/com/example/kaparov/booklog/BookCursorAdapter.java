@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.example.kaparov.booklog.data.BookContract.*;
@@ -63,6 +64,11 @@ public class BookCursorAdapter extends CursorAdapter {
         TextView categoryTextView = (TextView) view.findViewById(R.id.book_category);
         ImageView imageView = (ImageView) view.findViewById(R.id.book_image);
         RatingBar ratingBar = (RatingBar) view.findViewById(R.id.book_rating);
+
+        //// TODO: 5/17/17
+        TextView progressTextView = (TextView) view.findViewById(R.id.text_progress);
+        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+        TextView pagesRatioTextView = (TextView) view.findViewById(R.id.text_pages_ratio);
 
         // Find the columns of book attributes that we're interested in
         int titleColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_TITLE);

@@ -14,7 +14,7 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_progress"
+        android:id="@+id/action_set_current_page"
         android:title="@string/action_set_progresss"
         app:showAsAction="never" />
 

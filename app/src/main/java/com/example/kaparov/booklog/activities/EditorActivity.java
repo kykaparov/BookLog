@@ -294,6 +294,13 @@ public class EditorActivity extends AppCompatActivity implements
                 // Pop up confirmation dialog for deletion
                 showDeleteConfirmationDialog();
                 return true;
+
+            // Respond to a click on the "Set current page" menu option
+            case R.id.action_set_current_page:
+                // TODO: 5/17/17
+                setCurrentPage();
+                return true;
+
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
                 // If the book hasn't changed, continue with navigating up to parent activity
@@ -509,6 +516,14 @@ public class EditorActivity extends AppCompatActivity implements
         }
         // Close the activity
         finish();
+    }
+
+    /**
+     * Perform the setting current page of the book in the database.
+     */
+    private void setCurrentPage() {
+        // TODO: 5/17/17
+
     }
 
     private void setCoverChange() {
