@@ -168,7 +168,10 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
                 .input(R.string.search_hint, R.string.input_prefill, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                        handleSearch(input.toString());
+                        if (input.toString().equals(""))
+                            dialog.cancel();
+                        else
+                            handleSearch(input.toString());
 
                     }
                 }).show();
@@ -193,12 +196,8 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
             loaderManager.initLoader(BOOK_LOADER_ID, null, this);
-        } else {
 
-            // Update empty state with no connection error message
-//            mEmptyStateTextView.setText(R.string.no_internet_connection);
-        }
-
+        } else Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -233,7 +232,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         intent.putExtra("title", book.getTitle());
         intent.putExtra("author", book.getAuthor());
         intent.putExtra("category", book.getCategory());
-        intent.putExtra("pages", ("" + book.getPages()));
+        intent.putExtra("pages", String.valueOf(book.getPages()));
         intent.putExtra("image", book.getImageUrl());
         finish();
         startActivity(intent);

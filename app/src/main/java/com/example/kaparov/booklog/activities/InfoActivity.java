@@ -1,7 +1,9 @@
 package com.example.kaparov.booklog.activities;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,16 +14,24 @@ import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.kaparov.booklog.R;
-import com.example.kaparov.booklog.data.BookContract;
+import com.example.kaparov.booklog.data.BookContract.BookEntry;
 import com.example.kaparov.booklog.utils.UtilsBitmap;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class InfoActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -37,9 +47,46 @@ public class InfoActivity extends AppCompatActivity implements
     private TextView mTitleTextView;
     private TextView mAuthorTextView;
     private TextView mCategoryTextView;
-    private TextView mPagesTextView;
-    private ImageView mImageView;
+    private ImageView mBookImage;
     private RatingBar mBookRating;
+    private TextView mCurrentPageTextView;
+    private TextView mPagesTextView;
+    private TextView mTextStartDate;
+    private TextView mTextFinishDate;
+
+    private Calendar mCalendar = Calendar.getInstance();
+    //Pick start date
+    private final DatePickerDialog.OnDateSetListener startDate = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+
+            mCalendar.set(Calendar.YEAR, year);
+            mCalendar.set(Calendar.MONTH, month);
+            mCalendar.set(Calendar.DAY_OF_MONTH, day);
+
+            String myFormat = "dd MMM yy";
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+            mTextStartDate.setText(sdf.format(mCalendar.getTime()));
+        }
+    };
+    //Pick finish date
+    private final DatePickerDialog.OnDateSetListener finishDate = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+
+            mCalendar.set(Calendar.YEAR, year);
+            mCalendar.set(Calendar.MONTH, month);
+            mCalendar.set(Calendar.DAY_OF_MONTH, day);
+
+            String myFormat = "dd MMM yy";
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+            mTextFinishDate.setText(sdf.format(mCalendar.getTime()));
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,23 +108,58 @@ public class InfoActivity extends AppCompatActivity implements
         mTitleTextView = (TextView) findViewById(R.id.info_book_title);
         mAuthorTextView = (TextView) findViewById(R.id.info_book_author);
         mCategoryTextView = (TextView) findViewById(R.id.info_book_category);
-//        mPagesTextView = (TextView) findViewById(R.id.info_book_pages);
-        mImageView = (ImageView) findViewById(R.id.info_book_image);
+        mBookImage = (ImageView) findViewById(R.id.info_book_image);
         mBookRating = (RatingBar) findViewById(R.id.info_book_rating);
+        mCurrentPageTextView = (TextView) findViewById(R.id.from_edit_current_page);
+        ImageView editCurrentPage = (ImageView) findViewById(R.id.edit_current_page);
+        mPagesTextView = (TextView) findViewById(R.id.text_total_page_from_database);
+        ImageView editStartDate = (ImageView) findViewById(R.id.edit_start_date);
+        mTextStartDate = (TextView) findViewById(R.id.from_edit_start_date);
+        ImageView editFinishDate = (ImageView) findViewById(R.id.edit_finish_date);
+        mTextFinishDate = (TextView) findViewById(R.id.from_edit_finish_date);
+
+        editStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(InfoActivity.this, startDate, mCalendar
+                        .get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        editFinishDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(InfoActivity.this, finishDate, mCalendar
+                        .get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+
+        editCurrentPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickNumber();
+            }
+        });
+
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         // Define a projection that contains all columns from the books table
         String[] projection = {
-                BookContract.BookEntry._ID,
-                BookContract.BookEntry.COLUMN_TITLE,
-                BookContract.BookEntry.COLUMN_AUTHOR,
-                BookContract.BookEntry.COLUMN_CATEGORY,
-                BookContract.BookEntry.COLUMN_PAGES,
-                BookContract.BookEntry.COLUMN_IMAGE,
-                BookContract.BookEntry.COLUMN_RATING};
-//                BookEntry.COLUMN_ISBN };
+                BookEntry._ID,
+                BookEntry.COLUMN_TITLE,
+                BookEntry.COLUMN_AUTHOR,
+                BookEntry.COLUMN_CATEGORY,
+                BookEntry.COLUMN_PAGES,
+                BookEntry.COLUMN_IMAGE,
+                BookEntry.COLUMN_RATING,
+                BookEntry.COLUMN_CURRENT_PAGE,
+                BookEntry.COLUMN_START_DATE,
+                BookEntry.COLUMN_FINISH_DATE};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -99,32 +181,46 @@ public class InfoActivity extends AppCompatActivity implements
         // (This should be the only row in the cursor)
         if (cursor.moveToFirst()) {
             // Find the columns of book attributes that we're interested in
-            int titleColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_TITLE);
-            int authorColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_AUTHOR);
-            int categoryColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_CATEGORY);
-            int pagesColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_PAGES);
-            int imageColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_IMAGE);
-            int ratingColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_RATING);
-//            int isbnColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_ISBN);
+            int titleColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_TITLE);
+            int authorColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_AUTHOR);
+            int categoryColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_CATEGORY);
+            int pagesColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PAGES);
+            int imageColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_IMAGE);
+            int ratingColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_RATING);
+            int currentPageColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_CURRENT_PAGE);
+            int startDateColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_START_DATE);
+            int finishDateColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_FINISH_DATE);
+
 
             // Extract out the value from the Cursor for the given column index
             String bookTitle = cursor.getString(titleColumnIndex);
             String bookAuthor = cursor.getString(authorColumnIndex);
             String bookCategory = cursor.getString(categoryColumnIndex);
-            String bookPages = cursor.getString(pagesColumnIndex);
+            int bookPages = cursor.getInt(pagesColumnIndex);
             Float bookRating = cursor.getFloat(ratingColumnIndex);
             byte[] bookImage = cursor.getBlob(imageColumnIndex);
-//            String bookIsbn = cursor.getString(isbnColumnIndex);
+            int bookCurrentPage = cursor.getInt(currentPageColumnIndex);
+            String bookStartDate = cursor.getString(startDateColumnIndex);
+            String bookFinishDate = cursor.getString(finishDateColumnIndex);
 
             // Update the views on the screen with the values from the database
+            Bitmap bitmap = UtilsBitmap.getImage(bookImage);
+            mBookImage.setImageBitmap(bitmap);
+
             mTitleTextView.setText(bookTitle);
             mAuthorTextView.setText(bookAuthor);
             mCategoryTextView.setText(bookCategory);
-//            mPagesTextView.setText(bookPages);
+            mPagesTextView.setText(String.valueOf(bookPages));
             mBookRating.setRating(bookRating);
 
-            Bitmap bitmap = UtilsBitmap.getImage(bookImage);
-            mImageView.setImageBitmap(bitmap);
+//            if (bookCurrentPage != 0)
+            mCurrentPageTextView.setText(String.valueOf(bookCurrentPage));
+
+//            if (!bookStartDate.equals("set"))
+            mTextStartDate.setText(bookStartDate);
+
+//            if (!bookFinishDate.equals("set"))
+            mTextFinishDate.setText(bookFinishDate);
 
         }
     }
@@ -135,11 +231,7 @@ public class InfoActivity extends AppCompatActivity implements
         mTitleTextView.setText("");
         mAuthorTextView.setText("");
         mCategoryTextView.setText("");
-//        mPagesTextView.setText("");
         mBookRating.setRating(0);
-
-//        Bitmap bitmap = UtilsBitmap.getImage(null);
-//        mImageView.setImageBitmap(bitmap);
     }
 
     @Override
@@ -175,6 +267,10 @@ public class InfoActivity extends AppCompatActivity implements
 
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
+
+                //save changes
+                saveChanges();
+
                 NavUtils.navigateUpFromSameTask(InfoActivity.this);
                 return true;
         }
@@ -186,7 +282,7 @@ public class InfoActivity extends AppCompatActivity implements
      */
     private void showDeleteConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the postivie and negative buttons on the dialog.
+        // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
@@ -234,6 +330,45 @@ public class InfoActivity extends AppCompatActivity implements
         }
         // Close the activity
         finish();
+    }
+
+    //Pick current page number
+    private void pickNumber() {
+        new MaterialDialog.Builder(this)
+                .title(R.string.set_current_page)
+                .titleColorRes(R.color.colorBlackText)
+                .backgroundColorRes(R.color.colorPrimaryText)
+                .contentColorRes(R.color.colorBlackText)
+                .positiveColorRes(R.color.colorAccent)
+                .widgetColorRes(R.color.colorAccent)
+                .inputType(InputType.TYPE_CLASS_NUMBER)
+                .input(R.string.enter_number, R.string.input_prefill, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        if (input.toString().equals(""))
+                            mCurrentPageTextView.setText("0");
+                        else if (Integer.valueOf(input.toString()) <= Integer.valueOf(mPagesTextView.getText().toString())
+                                && Integer.valueOf(input.toString()) >= 0)
+                            mCurrentPageTextView.setText(input.toString());
+                        else
+                            Toast.makeText(InfoActivity.this, "Set page less than " + mPagesTextView.getText().toString(),
+                                    Toast.LENGTH_LONG).show();
+                    }
+                }).show();
+    }
+
+    private void saveChanges() {
+        // Read from input fields
+        Integer currentPageInteger = Integer.valueOf(mCurrentPageTextView.getText().toString().trim());
+        String startDateString = mTextStartDate.getText().toString().trim();
+        String finishDateString = mTextFinishDate.getText().toString().trim();
+
+        //save to database
+        ContentValues values = new ContentValues();
+        values.put(BookEntry.COLUMN_CURRENT_PAGE, currentPageInteger);
+        values.put(BookEntry.COLUMN_START_DATE, startDateString);
+        values.put(BookEntry.COLUMN_FINISH_DATE, finishDateString);
+        getContentResolver().update(mCurrentBookUri, values, null, null);
     }
 
 

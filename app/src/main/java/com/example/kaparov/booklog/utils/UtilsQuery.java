@@ -67,9 +67,7 @@ public final class UtilsQuery {
         }
 
         // Extract relevant fields from the JSON response and create a list of {@link Book}s
-        Book book = extractFeatureFromJson(jsonResponse);
-
-        return book;
+        return extractFeatureFromJson(jsonResponse);
     }
 
     /**
@@ -219,7 +217,7 @@ public final class UtilsQuery {
 
             } else {
                 //if isInGoogleBooks = false;
-                book = new Book(false, null, null, null, 0, null);
+                book = new Book(false, null, null, null, 1, null);
             }
 
         } catch (JSONException e) {

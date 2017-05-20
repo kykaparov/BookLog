@@ -39,7 +39,7 @@ public class CatalogActivity extends AppCompatActivity implements
     private static final int BOOK_LOADER = 0;
 
     /** Adapter for the ListView */
-    BookCursorAdapter mCursorAdapter;
+    private BookCursorAdapter mCursorAdapter;
 
 
     @Override
@@ -82,7 +82,7 @@ public class CatalogActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
 
         // Find the ListView which will be populated with the book data
-        ListView bookListView = (ListView) findViewById(R.id.listview);
+        ListView bookListView = (ListView) findViewById(R.id.listView);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
@@ -175,8 +175,11 @@ public class CatalogActivity extends AppCompatActivity implements
                 BookEntry.COLUMN_CATEGORY,
                 BookEntry.COLUMN_PAGES,
                 BookEntry.COLUMN_IMAGE,
-                BookEntry.COLUMN_RATING};
-//                BookEntry.COLUMN_ISBN};
+                BookEntry.COLUMN_RATING,
+                BookEntry.COLUMN_CURRENT_PAGE,
+                BookEntry.COLUMN_START_DATE,
+                BookEntry.COLUMN_FINISH_DATE};
+
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -204,6 +207,7 @@ public class CatalogActivity extends AppCompatActivity implements
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        // TODO: 5/19/17  
         if (id == R.id.nav_reading) {
 
         } else if (id == R.id.nav_read) {

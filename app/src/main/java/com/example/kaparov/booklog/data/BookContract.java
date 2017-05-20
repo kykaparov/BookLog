@@ -55,6 +55,8 @@ public class BookContract {
         public static final String COLUMN_IMAGE = "image";
         public static final String COLUMN_RATING = "rating";
         public static final String COLUMN_CURRENT_PAGE = "currentPages";
+        public static final String COLUMN_START_DATE = "startDate";
+        public static final String COLUMN_FINISH_DATE = "finishDate";
 
     }
 }

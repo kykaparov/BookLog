@@ -19,6 +19,7 @@
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"/>
 
+        <!-- Image field -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="160dp"
@@ -49,7 +50,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:background="@android:color/darker_gray"/>
 
         <LinearLayout
@@ -130,24 +130,148 @@
                     android:stepSize="1"/>
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:background="@android:color/darker_gray"/>
 
         </LinearLayout>
 
+        <!-- Reading progress title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/progress_background"
+            android:elevation="2dp"
+            android:paddingBottom="8dp"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingTop="8dp"
+            android:text="@string/text_reading_progress"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/colorPrimaryText"/>
+
+        <!-- Reading progress field -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_vertical_margin">
 
-            <EditText
-                android:id="@+id/edit_current_page"
+            <!-- Current page field -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/CategoryStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="@string/text_current_page"/>
+
+                <TextView
+                    android:id="@+id/from_edit_current_page"
+                    style="@style/FieldStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="@string/set"
+                    android:textAlignment="center"/>
+
+                <ImageView
+                    android:id="@+id/edit_current_page"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_mode_edit_black_24dp"/>
+
+            </LinearLayout>
+
+            <!-- Total pages field -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/CategoryStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="@string/text_total_pages"/>
+
+                <TextView
+                    android:id="@+id/text_total_page_from_database"
+                    style="@style/FieldStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:textAlignment="center"
+                    tools:text="600"/>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_mode_edit_black_24dp"
+                    android:visibility="invisible"/>
+
+            </LinearLayout>
+
+            <!-- Start date field -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/CategoryStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="@string/text_start_date"/>
+
+                <TextView
+                    android:id="@+id/from_edit_start_date"
+                    style="@style/FieldStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="@string/set"
+                    android:textAlignment="center"/>
+
+                <ImageView
+                    android:id="@+id/edit_start_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_mode_edit_black_24dp"/>
+
+            </LinearLayout>
+
+            <!-- Finish date field -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/CategoryStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="@string/text_finish_date"/>
+
+                <TextView
+                    android:id="@+id/from_edit_finish_date"
+                    style="@style/FieldStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="@string/set"
+                    android:textAlignment="center"/>
+
+                <ImageView
+                    android:id="@+id/edit_finish_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_mode_edit_black_24dp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

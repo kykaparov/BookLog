@@ -19,9 +19,4 @@
         android:title="@string/action_delete"
         app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/action_progress"
-        android:title="@string/action_set_progresss"
-        app:showAsAction="never"/>
-
 </menu>

@@ -61,6 +61,7 @@ public class EditorActivity extends AppCompatActivity implements
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CHOOSE_IMAGE = 2;
     private static final int CAMERA_PERMISSION = 5;
+
     /** Content URI for the existing book (null if it's a new book) */
     private Uri mCurrentBookUri;
     private EditText mTitleEditText;
@@ -124,7 +125,7 @@ public class EditorActivity extends AppCompatActivity implements
         mImageView = (ImageView) findViewById(R.id.edit_book_image);
         mBookRating = (RatingBar) findViewById(R.id.edit_book_rating);
 
-        //Extract values from Scanner Avtivity
+        //Extract values from Scanner Activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
 
@@ -232,7 +233,7 @@ public class EditorActivity extends AppCompatActivity implements
         } else {
             // Otherwise this is an EXISTING book, so update the book with content URI: mCurrentBookUri
             // and pass in the new ContentValues. Pass in null for the selection and selection args
-            // because mCurrentbookUri will already identify the correct row in the database that
+            // because mCurrentBookUri will already identify the correct row in the database that
             // we want to modify.
             int rowsAffected = getContentResolver().update(mCurrentBookUri, values, null, null);
 
@@ -293,12 +294,6 @@ public class EditorActivity extends AppCompatActivity implements
             case R.id.action_delete:
                 // Pop up confirmation dialog for deletion
                 showDeleteConfirmationDialog();
-                return true;
-
-            // Respond to a click on the "Set current page" menu option
-            case R.id.action_set_current_page:
-                // TODO: 5/17/17
-                setCurrentPage();
                 return true;
 
             // Respond to a click on the "Up" arrow button in the app bar
@@ -366,8 +361,10 @@ public class EditorActivity extends AppCompatActivity implements
                 BookEntry.COLUMN_CATEGORY,
                 BookEntry.COLUMN_PAGES,
                 BookEntry.COLUMN_IMAGE,
-                BookEntry.COLUMN_RATING};
-//                BookEntry.COLUMN_ISBN };
+                BookEntry.COLUMN_RATING,
+                BookEntry.COLUMN_CURRENT_PAGE,
+                BookEntry.COLUMN_START_DATE,
+                BookEntry.COLUMN_FINISH_DATE};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -395,22 +392,20 @@ public class EditorActivity extends AppCompatActivity implements
             int pagesColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PAGES);
             int imageColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_IMAGE);
             int ratingColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_RATING);
-//            int isbnColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_ISBN);
 
             // Extract out the value from the Cursor for the given column index
             String bookTitle = cursor.getString(titleColumnIndex);
             String bookAuthor = cursor.getString(authorColumnIndex);
             String bookCategory = cursor.getString(categoryColumnIndex);
-            String bookPages = cursor.getString(pagesColumnIndex);
+            int bookPages = cursor.getInt(pagesColumnIndex);
             Float bookRating = cursor.getFloat(ratingColumnIndex);
             byte[] bookImage = cursor.getBlob(imageColumnIndex);
-//            String bookIsbn = cursor.getString(isbnColumnIndex);
 
             // Update the views on the screen with the values from the database
             mTitleEditText.setText(bookTitle);
             mAuthorEditText.setText(bookAuthor);
             mCategoryEditText.setText(bookCategory);
-            mPagesEditText.setText(bookPages);
+            mPagesEditText.setText(String.valueOf(bookPages));
             mBookRating.setRating(bookRating);
 
             Bitmap bitmap = UtilsBitmap.getImage(bookImage);
@@ -426,7 +421,6 @@ public class EditorActivity extends AppCompatActivity implements
         mTitleEditText.setText("");
         mAuthorEditText.setText("");
         mCategoryEditText.setText("");
-        mPagesEditText.setText("");
         mBookRating.setRating(0);
 
 //        Bitmap bitmap = UtilsBitmap.getImage(null);
@@ -444,7 +438,7 @@ public class EditorActivity extends AppCompatActivity implements
     private void showUnsavedChangesDialog(
             DialogInterface.OnClickListener discardButtonClickListener) {
         // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the postivie and negative buttons on the dialog.
+        // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.unsaved_changes_dialog_msg);
         builder.setPositiveButton(R.string.discard, discardButtonClickListener);
@@ -468,7 +462,7 @@ public class EditorActivity extends AppCompatActivity implements
      */
     private void showDeleteConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the postivie and negative buttons on the dialog.
+        // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
@@ -516,14 +510,6 @@ public class EditorActivity extends AppCompatActivity implements
         }
         // Close the activity
         finish();
-    }
-
-    /**
-     * Perform the setting current page of the book in the database.
-     */
-    private void setCurrentPage() {
-        // TODO: 5/17/17
-
     }
 
     private void setCoverChange() {
@@ -657,7 +643,7 @@ public class EditorActivity extends AppCompatActivity implements
 
     }
 
-    public void setBookCover() {
+    private void setBookCover() {
         String path = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/" + customPhotoName;
         Bitmap bitmap1 = BitmapFactory.decodeFile(path);
         mImageView.setImageBitmap(bitmap1);

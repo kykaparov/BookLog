@@ -42,7 +42,6 @@ public class BookLoader extends AsyncTaskLoader<Book> {
         }
 
         // Perform the network request, parse the response, and extract a book.
-        Book book = UtilsQuery.fetchBookData(mUrl);
-        return book;
+        return UtilsQuery.fetchBookData(mUrl);
     }
 }

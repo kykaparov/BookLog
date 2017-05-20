@@ -65,10 +65,11 @@ public class BookCursorAdapter extends CursorAdapter {
         ImageView imageView = (ImageView) view.findViewById(R.id.book_image);
         RatingBar ratingBar = (RatingBar) view.findViewById(R.id.book_rating);
 
-        //// TODO: 5/17/17
-        TextView progressTextView = (TextView) view.findViewById(R.id.text_progress);
-        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-        TextView pagesRatioTextView = (TextView) view.findViewById(R.id.text_pages_ratio);
+        TextView startTextView = (TextView) view.findViewById(R.id.catalog_start_date);
+        TextView finishTextView = (TextView) view.findViewById(R.id.catalog_finish_date);
+        TextView percentTextView = (TextView) view.findViewById(R.id.catalog_percent);
+        TextView ratioTextView = (TextView) view.findViewById(R.id.catalog_pages_ratio);
+        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.catalog_progress_bar);
 
         // Find the columns of book attributes that we're interested in
         int titleColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_TITLE);
@@ -77,26 +78,21 @@ public class BookCursorAdapter extends CursorAdapter {
         int pagesColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PAGES);
         int imageColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_IMAGE);
         int ratingColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_RATING);
-//        int isbnColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_ISBN);
+        int currentColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_CURRENT_PAGE);
+        int startColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_START_DATE);
+        int finishColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_FINISH_DATE);
 
 
         // Read the book attributes from the Cursor for the current book
         String bookTitle = cursor.getString(titleColumnIndex);
         String bookAuthor = cursor.getString(authorColumnIndex);
         String bookCategory = cursor.getString(categoryColumnIndex);
-        String bookPages = cursor.getString(pagesColumnIndex);
-        float bookRating = cursor.getFloat(ratingColumnIndex);
+        int bookPages = cursor.getInt(pagesColumnIndex);
         byte[] bookImage = cursor.getBlob(imageColumnIndex);
-//        String bookIsbn = cursor.getString(isbnColumnIndex);
-
-
-//        if (TextUtils.isEmpty(bookAuthor)) {
-//            bookAuthor = context.getString(R.string.unknown_author);
-//        }
-//
-//        if (TextUtils.isEmpty(bookCategory)) {
-//            bookCategory = context.getString(R.string.unknown_category);
-//        }
+        float bookRating = cursor.getFloat(ratingColumnIndex);
+        int bookCurrent = cursor.getInt(currentColumnIndex);
+        String bookStart = cursor.getString(startColumnIndex);
+        String bookFinish = cursor.getString(finishColumnIndex);
 
         // Update the TextViews with the attributes for the current book
         titleTextView.setText(bookTitle);
@@ -105,14 +101,21 @@ public class BookCursorAdapter extends CursorAdapter {
         ratingBar.setRating(bookRating);
 
         Bitmap bitmap = UtilsBitmap.getImage(bookImage);
-//                bitmap = Bitmap.createScaledBitmap(bitmap, 70, 70, true);  // TODO: 4/15/17
         imageView.setImageBitmap(bitmap);
 
+        startTextView.setText(bookStart);
+        finishTextView.setText(bookFinish);
+        int ratio = 100 * bookCurrent / bookPages;
+        percentTextView.setText(ratio + "%");
+        ratioTextView.setText(bookCurrent + "/" + bookPages);
+        progressBar.setProgress(ratio);
+
+
+        //// TODO: 5/19/17
 //        //photo.setImageURI(Uri.parse("Location");
 //        BitmapDrawable drawable = (BitmapDrawable) photo.getDrawable();
 //        Bitmap bitmap = drawable.getBitmap();
 //        bitmap = Bitmap.createScaledBitmap(bitmap, 70, 70, true);
 //        photo.setImageBitmap(bitmap);
-
     }
 }
