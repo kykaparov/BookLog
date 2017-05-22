@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,14 +34,16 @@ import com.github.clans.fab.FloatingActionMenu;
 public class CatalogActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int BOOK_ALL = 0;
+    private static final int BOOK_TO_READ = 1;
+    private static final int BOOK_HAVE_READ = 2;
+    private static final int BOOK_READING_NOW = 3;
     /**
      * Identifier for the book data loader
      */
-    private static final int BOOK_LOADER = 0;
-
+    private int mStatus;
     /** Adapter for the ListView */
     private BookCursorAdapter mCursorAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,19 +115,8 @@ public class CatalogActivity extends AppCompatActivity implements
             }
         });
 
-//        bookListView.setLongClickable(true);
-//
-//        bookListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//
-//                return false;
-//            }
-//        });
-
         // Kick off the loader
-        getLoaderManager().initLoader(BOOK_LOADER, null, this);
+        getLoaderManager().initLoader(mStatus, null, this);
     }
 
     @Override
@@ -166,7 +158,7 @@ public class CatalogActivity extends AppCompatActivity implements
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+    public Loader<Cursor> onCreateLoader(int status, Bundle bundle) {
         // Define a projection that specifies the columns from the table we care about.
         String[] projection = {
                 BookEntry._ID,
@@ -180,14 +172,29 @@ public class CatalogActivity extends AppCompatActivity implements
                 BookEntry.COLUMN_START_DATE,
                 BookEntry.COLUMN_FINISH_DATE};
 
+        String selection;
+        String[] selectionArgs = {"0"};
 
-        // This loader will execute the ContentProvider's query method on a background thread
-        return new CursorLoader(this,   // Parent activity context
-                BookEntry.CONTENT_URI,  // Provider content URI to query
-                projection,             // Columns to include in the resulting Cursor
-                null,                   // No selection clause
-                null,                   // No selection arguments
-                null);                  // Default sort order
+        //Select reading status and define query selection
+        switch (status) {
+            case BOOK_TO_READ:
+                selection = "CAST(" + BookEntry.COLUMN_CURRENT_PAGE + " AS TEXT)=?";
+                break;
+            case BOOK_READING_NOW:
+                selection = "CAST(" + BookEntry.COLUMN_CURRENT_PAGE + " AS TEXT)!=?"
+                        + " AND " + BookEntry.COLUMN_CURRENT_PAGE + "<" + BookEntry.COLUMN_PAGES;
+                break;
+            case BOOK_HAVE_READ:
+                selection = "CAST(" + BookEntry.COLUMN_CURRENT_PAGE + " AS TEXT)!=?"
+                        + " AND " + BookEntry.COLUMN_CURRENT_PAGE + "=" + BookEntry.COLUMN_PAGES;
+                break;
+            default:
+                selection = null;
+                selectionArgs = null;
+        }
+
+        return new CursorLoader(this, BookEntry.CONTENT_URI, projection,
+                selection, selectionArgs, null);
     }
 
     @Override
@@ -205,21 +212,27 @@ public class CatalogActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        // TODO: 5/19/17  
-        if (id == R.id.nav_reading) {
-
-        } else if (id == R.id.nav_read) {
-
-        } else if (id == R.id.nav_unread) {
-
-        } else if (id == R.id.nav_rate_app) {
-
+        switch (item.getItemId()) {
+            case R.id.nav_all:
+                mStatus = BOOK_ALL;
+                break;
+            case R.id.nav_to_read:
+                mStatus = BOOK_TO_READ;
+                break;
+            case R.id.nav_reading:
+                mStatus = BOOK_READING_NOW;
+                break;
+            case R.id.nav_have_read:
+                mStatus = BOOK_HAVE_READ;
+                break;
         }
+
+        //Restart Loader with a new reading status value
+        getLoaderManager().initLoader(mStatus, null, this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
