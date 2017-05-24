@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/edit_book_image"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_width="120dp"
+            android:layout_height="160dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_book_grey_600_48dp"/>
 

@@ -234,11 +234,12 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         intent.putExtra("category", book.getCategory());
         intent.putExtra("pages", String.valueOf(book.getPages()));
         intent.putExtra("image", book.getImageUrl());
-        finish();
         startActivity(intent);
+        finish();
     }
 
     @Override
     public void onLoaderReset(Loader<Book> loader) {
     }
+
 }

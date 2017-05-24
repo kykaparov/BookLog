@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -16,20 +14,13 @@ import android.widget.TextView;
 import com.example.kaparov.booklog.data.BookContract.*;
 import com.example.kaparov.booklog.utils.UtilsBitmap;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * {@link BookCursorAdapter} is an adapter for a list or grid view
  * that uses a {@link Cursor} of book data as its data source. This adapter knows
  * how to create list items for each row of book data in the {@link Cursor}.
  */
-public class BookCursorAdapter extends CursorAdapter implements Filterable {
-
-//    String status;
-//    private List<String> originalData = null;
-//    private List<String>filteredData = null;
+public class BookCursorAdapter extends CursorAdapter {
 
     /**
      * Constructs a new {@link BookCursorAdapter}.

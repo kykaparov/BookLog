@@ -14,7 +14,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,14 +33,16 @@ import com.github.clans.fab.FloatingActionMenu;
 public class CatalogActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, NavigationView.OnNavigationItemSelectedListener {
 
+    /**
+     * Identifier for the book data loader
+     */
     private static final int BOOK_ALL = 0;
     private static final int BOOK_TO_READ = 1;
     private static final int BOOK_HAVE_READ = 2;
     private static final int BOOK_READING_NOW = 3;
-    /**
-     * Identifier for the book data loader
-     */
+
     private int mStatus;
+
     /** Adapter for the ListView */
     private BookCursorAdapter mCursorAdapter;
 

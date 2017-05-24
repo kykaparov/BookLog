@@ -1,6 +1,7 @@
 package com.example.kaparov.booklog.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -11,7 +12,6 @@ import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,7 +21,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,12 +38,13 @@ import com.bumptech.glide.Glide;
 import com.example.kaparov.booklog.R;
 import com.example.kaparov.booklog.data.BookContract.*;
 import com.example.kaparov.booklog.utils.UtilsBitmap;
+import com.example.kaparov.booklog.utils.UtilsReadPermission;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Calendar;
-
-import id.zelory.compressor.*;
 
 
 /**
@@ -53,14 +53,14 @@ import id.zelory.compressor.*;
 public class EditorActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final String TAG = "EditorActivity";
+
     /** Identifier for the book data loader */
     private static final int EXISTING_BOOK_LOADER = 0;
 
-    private static final int SELECT_PICTURE = 1;
-    private static final String TAG = "EditorActivity";
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_CHOOSE_IMAGE = 2;
-    private static final int CAMERA_PERMISSION = 5;
+    private static final int CAMERA_PERMISSION = 10;
+    private int REQUEST_CAMERA = 0;
+    private int SELECT_FILE = 1;
 
     /** Content URI for the existing book (null if it's a new book) */
     private Uri mCurrentBookUri;
@@ -70,7 +70,6 @@ public class EditorActivity extends AppCompatActivity implements
     private EditText mPagesEditText;
     private ImageView mImageView;
     private RatingBar mBookRating;
-    private String customPhotoName = null;
 
     /**
      * Boolean flag that keeps track of whether the book has been edited (true) or not (false)
@@ -251,7 +250,7 @@ public class EditorActivity extends AppCompatActivity implements
         return 0;
     }
 
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_editor.xml file.
         // This adds menu items to the app bar.
@@ -285,6 +284,7 @@ public class EditorActivity extends AppCompatActivity implements
                 if (saveBook() == 0) {
                     // Exit activity
                     finish();
+
                     return true;
                 } else {
                     Toast.makeText(this, getString(R.string.toast_require), Toast.LENGTH_SHORT).show();
@@ -422,10 +422,6 @@ public class EditorActivity extends AppCompatActivity implements
         mAuthorEditText.setText("");
         mCategoryEditText.setText("");
         mBookRating.setRating(0);
-
-//        Bitmap bitmap = UtilsBitmap.getImage(null);
-//        mImageView.setImageBitmap(bitmap);
-
     }
 
     /**
@@ -522,133 +518,91 @@ public class EditorActivity extends AppCompatActivity implements
                     @Override
                     public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
                         if (position == 0) {
-
                             if (ContextCompat.checkSelfPermission(EditorActivity.this, Manifest.permission.CAMERA)
                                     != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(EditorActivity.this,
                                         new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION);
                             } else
-                                takePictureIntent();
+                                cameraIntent();
 
-                        } else if (position == 1) {
-                            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                            i.setType("image/*");
-                            if (i.resolveActivity(getPackageManager()) != null) {
-                                startActivityForResult(i, REQUEST_CHOOSE_IMAGE);
-                            } else {
-                                Log.e(TAG, "No Image chooser available");
-                                Toast.makeText(EditorActivity.this, R.string.cover_change_no_choose_picture_app, Toast.LENGTH_LONG)
-                                        .show();
-                            }
-                        }
+                        } else if (position == 1)
+                            galleryIntent();
                     }
                 })
                 .show();
     }
 
-    private void takePictureIntent() {
-        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (i.resolveActivity(getPackageManager()) != null) {
-            try {
-                File photoFile = createImageFile();
-                Uri photoUri = FileProvider.getUriForFile(
-                        this,
-                        "com.example.kaparov.test4.provider",
-                        photoFile);
-                i.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                startActivityForResult(i, REQUEST_IMAGE_CAPTURE);
-            } catch (IOException ioe) {
-                Log.e(TAG, "createImageFile ioe = " + ioe.toString());
-            }
+    private void cameraIntent() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_CAMERA);
         } else {
             Log.e(TAG, "Camera App Not Installed");
-            Toast.makeText(EditorActivity.this, getString(R.string.cover_change_no_camera_app), Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(EditorActivity.this, getString(R.string.cover_change_no_camera_app)
+                    , Toast.LENGTH_LONG).show();
         }
     }
 
-    private File createImageFile() throws IOException {
-        // Create a new image file for camera to save
-        String fileName = "Temp_" + Calendar.getInstance().getTimeInMillis();
-        File storageDir = getExternalFilesDir("Temp");
-        File image = File.createTempFile(
-                fileName, // prefix
-                ".jpg", // suffix
-                storageDir // directory
-        );
-        customPhotoName = image.getAbsolutePath();
-        return image;
+    private void galleryIntent() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, SELECT_FILE);
     }
-
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
+            case UtilsReadPermission.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    galleryIntent();
+                break;
             case CAMERA_PERMISSION:
-                if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    Toast.makeText(EditorActivity.this, getString(R.string.cover_change_camera_permission_denied),
-                            Toast.LENGTH_LONG)
-                            .show();
-                } else
-                    takePictureIntent();
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    cameraIntent();
         }
     }
+
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            if (customPhotoName == null) {
-                Log.e(TAG, "Error when taking a new picture");
-                Toast.makeText(EditorActivity.this, getString(R.string.cover_change_fail), Toast.LENGTH_LONG)
-                        .show();
-            } else {
-                File imageFile = new File(customPhotoName);
-                compressCustomCover(imageFile);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-                boolean succeed = imageFile.delete();
-                Log.i(TAG, "Delete camera image result = " + succeed);
-                customPhotoName = null;
-            }
-
-        } else if (requestCode == REQUEST_CHOOSE_IMAGE && resultCode == RESULT_OK) {
-            if (data == null) {
-                Log.e(TAG, "Error when choosing a picture");
-                Toast.makeText(EditorActivity.this, getString(R.string.cover_change_fail), Toast.LENGTH_LONG)
-                        .show();
-            } else {
-                try {
-                    File imageFile = FileUtil.from(this, data.getData());
-                    compressCustomCover(imageFile);
-                } catch (IOException ioe) {
-                    Toast.makeText(EditorActivity.this, getString(R.string.cover_change_fail), Toast.LENGTH_LONG)
-                            .show();
-                    Log.e(TAG, "FileUtil.from ioe = " + ioe.toString());
-                }
-            }
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == SELECT_FILE)
+                onSelectFromGalleryResult(data);
+            else if (requestCode == REQUEST_CAMERA)
+                onCaptureImageResult(data);
         }
     }
 
-    private void compressCustomCover(File imageFile) {
-        new Compressor.Builder(this)
-                .setMaxHeight(300)
-                .setMaxWidth(200)
-                .setQuality(80)
-                .setCompressFormat(Bitmap.CompressFormat.JPEG)
-                // we force the library to change .jpeg to .jpg in library code
-                .setDestinationDirectoryPath(
-                        getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath())
-                .build()
-                .compressToFile(imageFile);
+    private void onCaptureImageResult(Intent data) {
+        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 70, bytes);
 
-        setBookCover();
+        File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".jpg");
 
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mImageView.setImageBitmap(thumbnail);
     }
 
-    private void setBookCover() {
-        String path = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/" + customPhotoName;
-        Bitmap bitmap1 = BitmapFactory.decodeFile(path);
-        mImageView.setImageBitmap(bitmap1);
+    private void onSelectFromGalleryResult(Intent data) {
+        Glide.with(this)
+                .load(data.getData())
+                .asBitmap()
+                .fitCenter()
+                .into(mImageView);
     }
-
-
 
 }

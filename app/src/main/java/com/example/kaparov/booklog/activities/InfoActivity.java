@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +56,7 @@ public class InfoActivity extends AppCompatActivity implements
     private TextView mTextFinishDate;
 
     private Calendar mCalendar = Calendar.getInstance();
+
     //Pick start date
     private final DatePickerDialog.OnDateSetListener startDate = new DatePickerDialog.OnDateSetListener() {
 
@@ -191,7 +193,6 @@ public class InfoActivity extends AppCompatActivity implements
             int startDateColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_START_DATE);
             int finishDateColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_FINISH_DATE);
 
-
             // Extract out the value from the Cursor for the given column index
             String bookTitle = cursor.getString(titleColumnIndex);
             String bookAuthor = cursor.getString(authorColumnIndex);
@@ -206,22 +207,14 @@ public class InfoActivity extends AppCompatActivity implements
             // Update the views on the screen with the values from the database
             Bitmap bitmap = UtilsBitmap.getImage(bookImage);
             mBookImage.setImageBitmap(bitmap);
-
             mTitleTextView.setText(bookTitle);
             mAuthorTextView.setText(bookAuthor);
             mCategoryTextView.setText(bookCategory);
             mPagesTextView.setText(String.valueOf(bookPages));
             mBookRating.setRating(bookRating);
-
-//            if (bookCurrentPage != 0)
             mCurrentPageTextView.setText(String.valueOf(bookCurrentPage));
-
-//            if (!bookStartDate.equals("set"))
             mTextStartDate.setText(bookStartDate);
-
-//            if (!bookFinishDate.equals("set"))
             mTextFinishDate.setText(bookFinishDate);
-
         }
     }
 
@@ -370,6 +363,14 @@ public class InfoActivity extends AppCompatActivity implements
         values.put(BookEntry.COLUMN_FINISH_DATE, finishDateString);
         getContentResolver().update(mCurrentBookUri, values, null, null);
     }
+
+    protected void onStop() {
+        super.onStop();
+        Drawable d = mBookImage.getDrawable();
+        if (d != null) d.setCallback(null);
+        mBookImage.setImageDrawable(null);
+    }
+
 
 
 }

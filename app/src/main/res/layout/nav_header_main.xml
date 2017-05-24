@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/folders"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textAppearance="?android:textAppearanceMedium"
         android:textColor="@color/colorBlackText"/>
 
 </LinearLayout>

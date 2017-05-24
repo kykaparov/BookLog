@@ -2,7 +2,6 @@
     <string name="app_name">Books Log</string>
     <string name="empty_view_title_text">Here can be</string>
     <string name="empty_view_subtitle_text">your books!</string>
-    <string name="book">Book</string>
     <string name="book_title">Title:</string>
     <string name="book_author">Author(s):</string>
     <string name="book_category">Category:</string>
@@ -59,9 +58,6 @@
         <item>Gallery</item>
     </string-array>
     <string name="cover_change_no_camera_app">No Camera app installed!</string>
-    <string name="cover_change_no_choose_picture_app">No supported picture chooser in your device!</string>
-    <string name="cover_change_camera_permission_denied">You need to grant Camera permission to take new pictures!</string>
-    <string name="cover_change_fail">Something wrong when processing image! Please check the log and contact the developer!</string>
 
     <!--InfoActivity reading progress-->
     <string name="text_reading_progress">Reading progress</string>
