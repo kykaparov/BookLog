@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog;
+package com.oomat.kaparov.booklog;
 
 public class Book {
 

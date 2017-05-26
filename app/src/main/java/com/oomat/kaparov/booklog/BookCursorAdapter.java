@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog;
+package com.oomat.kaparov.booklog;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,8 +11,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import com.example.kaparov.booklog.data.BookContract.*;
-import com.example.kaparov.booklog.utils.UtilsBitmap;
+
+import com.oomat.kaparov.booklog.data.BookContract.*;
+import com.oomat.kaparov.booklog.utils.UtilsBitmap;
 
 
 /**

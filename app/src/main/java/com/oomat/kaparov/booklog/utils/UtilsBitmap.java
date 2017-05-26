@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog.utils;
+package com.oomat.kaparov.booklog.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

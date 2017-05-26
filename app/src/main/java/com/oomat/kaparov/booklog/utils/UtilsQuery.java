@@ -1,9 +1,9 @@
-package com.example.kaparov.booklog.utils;
+package com.oomat.kaparov.booklog.utils;
 
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.kaparov.booklog.Book;
+import com.oomat.kaparov.booklog.Book;
 
 import org.json.JSONArray;
 import org.json.JSONException;

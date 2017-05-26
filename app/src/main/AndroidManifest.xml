@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.kaparov.booklog">
+          package="com.oomat.kaparov.booklog">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.CatalogActivity"
+            android:name="com.oomat.kaparov.booklog.activities.CatalogActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -26,36 +26,36 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.InfoActivity"
+            android:name="com.oomat.kaparov.booklog.activities.InfoActivity"
             android:label="@string/book_info"
-            android:parentActivityName=".activities.CatalogActivity">
+            android:parentActivityName="com.oomat.kaparov.booklog.activities.CatalogActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.CatalogActivity"/>
+                android:value="com.oomat.kaparov.booklog.activities.CatalogActivity"/>
         </activity>
         <activity
-            android:name=".activities.EditorActivity"
+            android:name="com.oomat.kaparov.booklog.activities.EditorActivity"
             android:label="@string/add_new_book"
-            android:parentActivityName=".activities.CatalogActivity">
+            android:parentActivityName="com.oomat.kaparov.booklog.activities.CatalogActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.CatalogActivity"/>
+                android:value="com.oomat.kaparov.booklog.activities.CatalogActivity"/>
         </activity>
         <activity
-            android:name=".activities.ScannerActivity"
+            android:name="com.oomat.kaparov.booklog.activities.ScannerActivity"
             android:label="@string/scan_a_book"
-            android:parentActivityName=".activities.CatalogActivity"
+            android:parentActivityName="com.oomat.kaparov.booklog.activities.CatalogActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppOverlayTheme">
         </activity>
 
         <provider
-            android:name=".data.BookProvider"
-            android:authorities="com.example.kaparov.booklog"
+            android:name="com.oomat.kaparov.booklog.data.BookProvider"
+            android:authorities="com.oomat.kaparov.booklog"
             android:exported="false">
         </provider>
 

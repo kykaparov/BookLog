@@ -1,10 +1,10 @@
-package com.example.kaparov.booklog.data;
+package com.oomat.kaparov.booklog.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.kaparov.booklog.data.BookContract.*;
+import com.oomat.kaparov.booklog.data.BookContract.*;
 
 /**
  * Database helper for Books app. Manages database creation and version management.

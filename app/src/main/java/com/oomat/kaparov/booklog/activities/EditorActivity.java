@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog.activities;
+package com.oomat.kaparov.booklog.activities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -23,7 +23,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -35,10 +34,10 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
-import com.example.kaparov.booklog.R;
-import com.example.kaparov.booklog.data.BookContract.*;
-import com.example.kaparov.booklog.utils.UtilsBitmap;
-import com.example.kaparov.booklog.utils.UtilsReadPermission;
+import com.oomat.kaparov.booklog.R;
+import com.oomat.kaparov.booklog.data.BookContract.*;
+import com.oomat.kaparov.booklog.utils.UtilsBitmap;
+import com.oomat.kaparov.booklog.utils.UtilsReadPermission;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -52,8 +51,6 @@ import java.io.IOException;
  */
 public class EditorActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
-
-    private static final String TAG = "EditorActivity";
 
     /** Identifier for the book data loader */
     private static final int EXISTING_BOOK_LOADER = 0;
@@ -537,7 +534,6 @@ public class EditorActivity extends AppCompatActivity implements
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, REQUEST_CAMERA);
         } else {
-            Log.e(TAG, "Camera App Not Installed");
             Toast.makeText(EditorActivity.this, getString(R.string.cover_change_no_camera_app)
                     , Toast.LENGTH_LONG).show();
         }

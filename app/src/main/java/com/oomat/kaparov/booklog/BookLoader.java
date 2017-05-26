@@ -1,9 +1,9 @@
-package com.example.kaparov.booklog;
+package com.oomat.kaparov.booklog;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
-import com.example.kaparov.booklog.utils.UtilsQuery;
+import com.oomat.kaparov.booklog.utils.UtilsQuery;
 
 /**
  * Loads a book by using an AsyncTask to perform the

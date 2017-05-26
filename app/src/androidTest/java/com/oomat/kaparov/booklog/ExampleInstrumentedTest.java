@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog;
+package com.oomat.kaparov.booklog;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.kaparov.booklog", appContext.getPackageName());
+        assertEquals("com.oomat.kaparov.booklog", appContext.getPackageName());
     }
 }

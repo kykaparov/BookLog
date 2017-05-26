@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog.activities;
+package com.oomat.kaparov.booklog.activities;
 
 import android.app.LoaderManager;
 import android.content.ContentUris;
@@ -20,9 +20,9 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.kaparov.booklog.BookCursorAdapter;
-import com.example.kaparov.booklog.R;
-import com.example.kaparov.booklog.data.BookContract.*;
+import com.oomat.kaparov.booklog.BookCursorAdapter;
+import com.oomat.kaparov.booklog.R;
+import com.oomat.kaparov.booklog.data.BookContract.*;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 

@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog.data;
+package com.oomat.kaparov.booklog.data;
 
 import android.content.ContentResolver;
 import android.net.Uri;
@@ -10,7 +10,7 @@ import android.provider.BaseColumns;
 public class BookContract {
 
     //The "Content authority" is a name for the entire content provider
-    public static final String CONTENT_AUTHORITY = "com.example.kaparov.booklog";
+    public static final String CONTENT_AUTHORITY = "com.oomat.kaparov.booklog";
     /**
      * Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact
      * the content provider.

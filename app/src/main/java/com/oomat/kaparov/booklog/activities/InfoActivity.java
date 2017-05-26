@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog.activities;
+package com.oomat.kaparov.booklog.activities;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -26,9 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.kaparov.booklog.R;
-import com.example.kaparov.booklog.data.BookContract.BookEntry;
-import com.example.kaparov.booklog.utils.UtilsBitmap;
+import com.oomat.kaparov.booklog.R;
+import com.oomat.kaparov.booklog.data.BookContract.BookEntry;
+import com.oomat.kaparov.booklog.utils.UtilsBitmap;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -250,6 +250,9 @@ public class InfoActivity extends AppCompatActivity implements
                 // Launch the {@link EditorActivity} to display the data for the current book.
                 startActivity(intent);
 
+                //save changes
+                saveChanges();
+
                 return true;
 
             // Respond to a click on the "Delete" menu option
@@ -268,6 +271,16 @@ public class InfoActivity extends AppCompatActivity implements
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * This method is called when the back button is pressed.
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //save changes
+        saveChanges();
     }
 
     /**

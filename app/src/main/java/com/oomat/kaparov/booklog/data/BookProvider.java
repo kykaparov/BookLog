@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog.data;
+package com.oomat.kaparov.booklog.data;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -11,9 +11,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.kaparov.booklog.data.BookContract.*;
-import static com.example.kaparov.booklog.data.BookContract.CONTENT_AUTHORITY;
-import static com.example.kaparov.booklog.data.BookContract.PATH_BOOKS;
+import com.oomat.kaparov.booklog.data.BookContract.*;
+
+import static com.oomat.kaparov.booklog.data.BookContract.CONTENT_AUTHORITY;
+import static com.oomat.kaparov.booklog.data.BookContract.PATH_BOOKS;
 
 /**
  * {@link ContentProvider} for Book Log app.

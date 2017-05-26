@@ -1,4 +1,4 @@
-package com.example.kaparov.booklog.activities;
+package com.oomat.kaparov.booklog.activities;
 
 
 import android.Manifest;
@@ -19,24 +19,21 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.kaparov.booklog.Book;
-import com.example.kaparov.booklog.BookLoader;
-import com.example.kaparov.booklog.R;
+import com.oomat.kaparov.booklog.Book;
+import com.oomat.kaparov.booklog.BookLoader;
+import com.oomat.kaparov.booklog.R;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class ScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler,
         LoaderManager.LoaderCallbacks<Book> {
-
-    private static final String TAG = "ScannerActivity";
 
     private static final int CAMERA_PERMISSION = 1;
     private static final int BOOK_LOADER_ID = 1;
@@ -206,7 +203,6 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
             case CAMERA_PERMISSION:
                 if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     Toast.makeText(this, "Please grant camera permission to use the QR Scanner", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG,"Camera Permission Denied");
                     finish();
                 }
         }
