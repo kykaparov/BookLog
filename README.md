@@ -1,7 +1,5 @@
 # Books Log
 <br>
-[![web_hi_res_512.png](https://s1.postimg.org/6iu807bxr/web_hi_res_512.png)](https://postimg.org/image/eoc9yd06j/)
-<br><br>
 Books Log helps to store a book library and track their reading progress.
 <br><br>
 Features:
