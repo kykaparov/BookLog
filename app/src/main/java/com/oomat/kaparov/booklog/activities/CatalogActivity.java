@@ -20,11 +20,13 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.crashlytics.android.Crashlytics;
 import com.oomat.kaparov.booklog.BookCursorAdapter;
 import com.oomat.kaparov.booklog.R;
 import com.oomat.kaparov.booklog.data.BookContract.*;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import io.fabric.sdk.android.Fabric;
 
 import static com.oomat.kaparov.booklog.utils.Constants.*;
 
@@ -42,6 +44,7 @@ public class CatalogActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_catalog);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
