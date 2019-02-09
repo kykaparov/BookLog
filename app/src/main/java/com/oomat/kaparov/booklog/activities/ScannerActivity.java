@@ -1,6 +1,5 @@
 package com.oomat.kaparov.booklog.activities;
 
-
 import android.Manifest;
 import android.app.LoaderManager;
 import android.content.Context;
@@ -32,15 +31,11 @@ import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
+import static com.oomat.kaparov.booklog.utils.Constants.*;
+
 public class ScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler,
         LoaderManager.LoaderCallbacks<Book> {
 
-    private static final int CAMERA_PERMISSION = 1;
-    private static final int BOOK_LOADER_ID = 1;
-
-    private static final String BOOK_URL = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
-
-    private static final String FLASH_STATE = "FLASH_STATE";
     private ZXingScannerView mScannerView;
     private boolean mFlash;
     private Toolbar mToolbar;
@@ -62,7 +57,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         }
         setContentView(R.layout.activity_scanner);
 
-        mToolbar = (Toolbar) findViewById(R.id.scannerToolbar);
+        mToolbar = findViewById(R.id.scannerToolbar);
         mToolbar.setTitle(R.string.scan_toolbar);
         setSupportActionBar(mToolbar);
         final ActionBar ab = getSupportActionBar();
@@ -70,7 +65,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        ViewGroup contentFrame = (ViewGroup) findViewById(R.id.scannerFrame);
+        ViewGroup contentFrame = findViewById(R.id.scannerFrame);
         mScannerView = new ZXingScannerView(this);
         contentFrame.addView(mScannerView);
         mScannerView.setResultHandler(this);
@@ -211,7 +206,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
     @Override
     public Loader<Book> onCreateLoader(int i, Bundle bundle) {
 
-        Uri baseUri = Uri.parse(BOOK_URL + bookISBN);
+        Uri baseUri = Uri.parse(GOOGLE_BOOK_API_URL + bookISBN);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         return new BookLoader(this, uriBuilder.toString());
@@ -224,7 +219,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
             Toast.makeText(this, "No info about this book, ISBN: " + bookISBN + "\nAdd book manually.", Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(ScannerActivity.this, EditorActivity.class);
-        intent.putExtra("isInGoogleBooks", book.isInGoogleBooks());
+        intent.putExtra("isGoogleBook", book.isInGoogleBooks());
         intent.putExtra("title", book.getTitle());
         intent.putExtra("author", book.getAuthor());
         intent.putExtra("category", book.getCategory());

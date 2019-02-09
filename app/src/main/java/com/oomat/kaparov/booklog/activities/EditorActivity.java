@@ -37,7 +37,6 @@ import com.bumptech.glide.Glide;
 import com.oomat.kaparov.booklog.R;
 import com.oomat.kaparov.booklog.data.BookContract.*;
 import com.oomat.kaparov.booklog.utils.UtilsBitmap;
-import com.oomat.kaparov.booklog.utils.UtilsReadPermission;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -45,19 +44,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import static com.oomat.kaparov.booklog.utils.Constants.*;
 
 /**
  * Allows user to create a new book or edit an existing one.
  */
 public class EditorActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
-
-    /** Identifier for the book data loader */
-    private static final int EXISTING_BOOK_LOADER = 0;
-
-    private static final int CAMERA_PERMISSION = 10;
-    private int REQUEST_CAMERA = 0;
-    private int SELECT_FILE = 1;
 
     /** Content URI for the existing book (null if it's a new book) */
     private Uri mCurrentBookUri;
@@ -110,16 +103,16 @@ public class EditorActivity extends AppCompatActivity implements
 
             // Initialize a loader to read the book data from the database
             // and display the current values in the editor
-            getLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
+            getLoaderManager().initLoader(EXISTING_BOOK_LOADER_ID, null, this);
         }
 
         // Find all relevant views that we will need to read user input from
-        mTitleEditText = (EditText) findViewById(R.id.edit_book_title);
-        mAuthorEditText = (EditText) findViewById(R.id.edit_book_author);
-        mCategoryEditText = (EditText) findViewById(R.id.edit_book_category);
-        mPagesEditText = (EditText) findViewById(R.id.edit_book_pages);
-        mImageView = (ImageView) findViewById(R.id.edit_book_image);
-        mBookRating = (RatingBar) findViewById(R.id.edit_book_rating);
+        mTitleEditText = findViewById(R.id.edit_book_title);
+        mAuthorEditText = findViewById(R.id.edit_book_author);
+        mCategoryEditText = findViewById(R.id.edit_book_category);
+        mPagesEditText = findViewById(R.id.edit_book_pages);
+        mImageView = findViewById(R.id.edit_book_image);
+        mBookRating = findViewById(R.id.edit_book_rating);
 
         //Extract values from Scanner Activity
         Bundle extras = getIntent().getExtras();
@@ -136,7 +129,7 @@ public class EditorActivity extends AppCompatActivity implements
             mCategoryEditText.setText(categoryExtra);
             mPagesEditText.setText(pagesExtra);
 
-            if (extras.getBoolean("isInGoogleBooks")) {
+            if (extras.getBoolean("isGoogleBook")) {
                 Glide.with(EditorActivity.this).
                         load(imageExtra).
                         asBitmap().
@@ -547,7 +540,7 @@ public class EditorActivity extends AppCompatActivity implements
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case UtilsReadPermission.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+            case READ_EXTERNAL_STORAGE_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     galleryIntent();
                 break;

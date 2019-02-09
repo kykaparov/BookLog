@@ -34,13 +34,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static com.oomat.kaparov.booklog.utils.Constants.EXISTING_BOOK_LOADER_ID;
+
 public class InfoActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
-
-    /**
-     * Identifier for the book data loader
-     */
-    private static final int EXISTING_BOOK_LOADER = 1;
 
     //Content URI for the existing book
     private Uri mCurrentBookUri;
@@ -104,21 +101,21 @@ public class InfoActivity extends AppCompatActivity implements
 
         // Initialize a loader to read the book data from the database
         // and display the current values in the Book info
-        getLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
+        getLoaderManager().initLoader(EXISTING_BOOK_LOADER_ID, null, this);
 
         // Find all relevant views that we will need to read user input from
-        mTitleTextView = (TextView) findViewById(R.id.info_book_title);
-        mAuthorTextView = (TextView) findViewById(R.id.info_book_author);
-        mCategoryTextView = (TextView) findViewById(R.id.info_book_category);
-        mBookImage = (ImageView) findViewById(R.id.info_book_image);
-        mBookRating = (RatingBar) findViewById(R.id.info_book_rating);
-        mCurrentPageTextView = (TextView) findViewById(R.id.from_edit_current_page);
-        ImageView editCurrentPage = (ImageView) findViewById(R.id.edit_current_page);
-        mPagesTextView = (TextView) findViewById(R.id.text_total_page_from_database);
-        ImageView editStartDate = (ImageView) findViewById(R.id.edit_start_date);
-        mTextStartDate = (TextView) findViewById(R.id.from_edit_start_date);
-        ImageView editFinishDate = (ImageView) findViewById(R.id.edit_finish_date);
-        mTextFinishDate = (TextView) findViewById(R.id.from_edit_finish_date);
+        mTitleTextView = findViewById(R.id.info_book_title);
+        mAuthorTextView = findViewById(R.id.info_book_author);
+        mCategoryTextView = findViewById(R.id.info_book_category);
+        mBookImage = findViewById(R.id.info_book_image);
+        mBookRating = findViewById(R.id.info_book_rating);
+        mCurrentPageTextView = findViewById(R.id.from_edit_current_page);
+        ImageView editCurrentPage = findViewById(R.id.edit_current_page);
+        mPagesTextView = findViewById(R.id.text_total_page_from_database);
+        ImageView editStartDate = findViewById(R.id.edit_start_date);
+        mTextStartDate = findViewById(R.id.from_edit_start_date);
+        ImageView editFinishDate = findViewById(R.id.edit_finish_date);
+        mTextFinishDate = findViewById(R.id.from_edit_finish_date);
 
         editStartDate.setOnClickListener(new View.OnClickListener() {
             @Override

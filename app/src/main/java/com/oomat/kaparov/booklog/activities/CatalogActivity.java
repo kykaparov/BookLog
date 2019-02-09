@@ -26,20 +26,13 @@ import com.oomat.kaparov.booklog.data.BookContract.*;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
+import static com.oomat.kaparov.booklog.utils.Constants.*;
 
 /**
  * Displays list of books that were entered and stored in the app.
  */
 public class CatalogActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, NavigationView.OnNavigationItemSelectedListener {
-
-    /**
-     * Identifier for the book data loader
-     */
-    private static final int BOOK_ALL = 0;
-    private static final int BOOK_TO_READ = 1;
-    private static final int BOOK_HAVE_READ = 2;
-    private static final int BOOK_READING_NOW = 3;
 
     private int mStatus;
 
@@ -50,13 +43,13 @@ public class CatalogActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.fabmenu);
+        final FloatingActionMenu fabMenu = findViewById(R.id.fabmenu);
         fabMenu.setClosedOnTouchOutside(true);
 
-        final FloatingActionButton fabBtnScanner = (FloatingActionButton) findViewById(R.id.fab_scanner);
+        final FloatingActionButton fabBtnScanner = findViewById(R.id.fab_scanner);
         fabBtnScanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +59,7 @@ public class CatalogActivity extends AppCompatActivity implements
             }
         });
 
-        final FloatingActionButton fabBtnAdd = (FloatingActionButton) findViewById(R.id.fab_add);
+        final FloatingActionButton fabBtnAdd = findViewById(R.id.fab_add);
         fabBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,17 +69,17 @@ public class CatalogActivity extends AppCompatActivity implements
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // Find the ListView which will be populated with the book data
-        ListView bookListView = (ListView) findViewById(R.id.listView);
+        ListView bookListView = findViewById(R.id.listView);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
@@ -122,7 +115,7 @@ public class CatalogActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -231,7 +224,7 @@ public class CatalogActivity extends AppCompatActivity implements
         //Restart Loader with a new reading status value
         getLoaderManager().initLoader(mStatus, null, this);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
