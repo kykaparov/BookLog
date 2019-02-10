@@ -117,24 +117,15 @@ public class EditorActivity extends AppCompatActivity implements
         //Extract values from Scanner Activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            mTitleEditText.setText(extras.getString("title"));
+            mAuthorEditText.setText(extras.getString("authors"));
+            mCategoryEditText.setText(extras.getString("categories"));
+            mPagesEditText.setText(extras.getString("pages"));
 
-            String titleExtra = extras.getString("title");
-            String authorExtra = extras.getString("author");
-            String categoryExtra = extras.getString("category");
-            String pagesExtra = extras.getString("pages");
-            String imageExtra = extras.getString("image");
-
-            mTitleEditText.setText(titleExtra);
-            mAuthorEditText.setText(authorExtra);
-            mCategoryEditText.setText(categoryExtra);
-            mPagesEditText.setText(pagesExtra);
-
-            if (extras.getBoolean("isGoogleBook")) {
-                Glide.with(EditorActivity.this).
-                        load(imageExtra).
-                        asBitmap().
-                        into(mImageView);
-            }
+            Glide.with(EditorActivity.this)
+                    .asBitmap()
+                    .load(extras.getString("imageLink"))
+                    .into(mImageView);
         }
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
@@ -588,9 +579,8 @@ public class EditorActivity extends AppCompatActivity implements
 
     private void onSelectFromGalleryResult(Intent data) {
         Glide.with(this)
-                .load(data.getData())
                 .asBitmap()
-                .fitCenter()
+                .load(data.getData())
                 .into(mImageView);
     }
 

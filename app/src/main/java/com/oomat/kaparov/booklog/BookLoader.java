@@ -3,6 +3,7 @@ package com.oomat.kaparov.booklog;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
+import com.oomat.kaparov.booklog.model.Book;
 import com.oomat.kaparov.booklog.utils.UtilsQuery;
 
 /**

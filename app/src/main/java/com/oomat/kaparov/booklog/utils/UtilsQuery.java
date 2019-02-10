@@ -1,13 +1,9 @@
 package com.oomat.kaparov.booklog.utils;
 
-import android.text.TextUtils;
 import android.util.Log;
 
-import com.oomat.kaparov.booklog.Book;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.oomat.kaparov.booklog.model.Book;
+import com.oomat.kaparov.booklog.model.google.GoogleBook;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -51,8 +47,14 @@ public final class UtilsQuery {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
-        // Extract relevant fields from the JSON response and create a list of {@link Book}s
-        return extractFeatureFromJson(jsonResponse);
+        GoogleBook googleBook = null;
+        try {
+            googleBook = JsonUtils.parseJson(jsonResponse, GoogleBook.class);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem parsing json response.", e);
+        }
+
+        return new Book(googleBook);
     }
 
     /**
@@ -129,90 +131,4 @@ public final class UtilsQuery {
         }
         return output.toString();
     }
-
-    /**
-     * Return a {@link Book} object that has been built up from
-     * parsing the given JSON response.
-     */
-    private static Book extractFeatureFromJson(String bookJSON) {
-        // If the JSON string is empty or null, then return early.
-        if (TextUtils.isEmpty(bookJSON)) {
-            return null;
-        }
-
-        Book book = null;
-        String title;
-        String authors;
-        String category;
-        int pages;
-        String imageUrl;
-
-
-        // Try to parse the JSON response string. If there's a problem with the way the JSON
-        // is formatted, a JSONException exception object will be thrown.
-        // Catch the exception so the app doesn't crash, and print the error message to the logs.
-        try {
-            JSONObject baseJsonResponse = new JSONObject(bookJSON);
-
-            if (baseJsonResponse.has("items")) {
-
-                //if isInGoogleBooks = true;
-
-                JSONArray bookArray = baseJsonResponse.getJSONArray("items");
-
-                JSONObject currentBook = bookArray.getJSONObject(0);
-
-                JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
-
-                if (volumeInfo.has("subtitle"))
-                    title = volumeInfo.getString("title") + " " + volumeInfo.getString("subtitle");
-                else
-                    title = volumeInfo.getString("title");
-
-                if (volumeInfo.has("authors")) {
-                    JSONArray authorArray = volumeInfo.getJSONArray("authors");
-                    authors = authorArray.getString(0);
-                    for (int i = 1; i < authorArray.length(); i++) {
-                        authors += " " + authorArray.getString(i);
-                    }
-                } else authors = "";
-
-                if (volumeInfo.has("categories")) {
-                    JSONArray categoryArray = volumeInfo.getJSONArray("categories");
-                    category = categoryArray.getString(0);
-                    for (int i = 1; i < categoryArray.length(); i++) {
-                        category += " " + categoryArray.getString(i);
-                    }
-                } else category = "";
-
-                if (volumeInfo.has("pageCount"))
-                    pages = volumeInfo.getInt("pageCount");
-                else
-                    pages = 0;
-
-                if (volumeInfo.has("pageCount")) {
-                    JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-                    imageUrl = imageLinks.getString("smallThumbnail");
-                    if (imageLinks.getString("smallThumbnail") == null)
-                        imageUrl = imageLinks.getString("thumbnail");
-                } else imageUrl = "";
-
-                // Create a new {@link Book} object from the JSON response.
-                book = new Book(true, title, authors, category, pages, imageUrl);
-
-            } else {
-                //if isInGoogleBooks = false;
-                book = new Book(false, null, null, null, 1, null);
-            }
-
-        } catch (JSONException e) {
-            // If an error is thrown when executing any of the above statements in the "try" block,
-            // catch the exception here, so the app doesn't crash. Print a log message
-            // with the message from the exception.
-            Log.e("UtilsQuery", "Problem parsing the earthquake JSON results", e);
-        }
-
-        return book;
-    }
-
 }

@@ -43,21 +43,38 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    androidTestImplementation 'junit:junit:4.12'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    // Support library
     implementation "com.android.support:appcompat-v7:$support_lib_version"
     implementation "com.android.support:support-v4:$support_lib_version"
     implementation "com.android.support:support-v13:$support_lib_version"
     implementation "com.android.support:design:$support_lib_version"
 
+    // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
-    implementation 'com.github.clans:fab:1.6.4'
-    implementation 'me.dm7.barcodescanner:zxing:1.9'
-    implementation 'com.afollestad.material-dialogs:core:0.9.4.2'
+    // Jackson
+    implementation "com.fasterxml.jackson.core:jackson-core:$jackson_version"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
 
-    androidTestImplementation 'junit:junit:4.12'
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    // Crashlytics
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+    // FAB
+    implementation 'com.github.clans:fab:1.6.4'
+
+    // Scanner
+    implementation 'me.dm7.barcodescanner:zxing:1.9'
+
+    // Material dialogs
+    implementation 'com.afollestad.material-dialogs:core:0.9.4.2'
 }

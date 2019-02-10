@@ -24,7 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.oomat.kaparov.booklog.Book;
+import com.oomat.kaparov.booklog.model.Book;
 import com.oomat.kaparov.booklog.BookLoader;
 import com.oomat.kaparov.booklog.R;
 import com.google.zxing.Result;
@@ -215,18 +215,19 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
     @Override
     public void onLoadFinished(Loader<Book> loader, Book book) {
 
-        if (!book.isInGoogleBooks())
-            Toast.makeText(this, "No info about this book, ISBN: " + bookISBN + "\nAdd book manually.", Toast.LENGTH_LONG).show();
-
-        Intent intent = new Intent(ScannerActivity.this, EditorActivity.class);
-        intent.putExtra("isGoogleBook", book.isInGoogleBooks());
-        intent.putExtra("title", book.getTitle());
-        intent.putExtra("author", book.getAuthor());
-        intent.putExtra("category", book.getCategory());
-        intent.putExtra("pages", String.valueOf(book.getPages()));
-        intent.putExtra("image", book.getImageUrl());
-        startActivity(intent);
-        finish();
+        if (book.isGoogleBookAvailable()) {
+            Intent intent = new Intent(ScannerActivity.this, EditorActivity.class);
+            intent.putExtra("title", book.getTitle());
+            intent.putExtra("authors", book.getAuthors());
+            intent.putExtra("categories", book.getCategories());
+            intent.putExtra("pages", String.valueOf(book.getPageCount()));
+            intent.putExtra("imageLink", book.getImageLink());
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(this, "No info about this book, ISBN: " + bookISBN + "\nAdd book manually.",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

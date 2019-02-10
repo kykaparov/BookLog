@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.oomat.kaparov.booklog">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -9,54 +10,48 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name="com.oomat.kaparov.booklog.activities.CatalogActivity"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:roundIcon="@mipmap/ic_launcher"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+
+        <activity
+                android:name="com.oomat.kaparov.booklog.activities.CatalogActivity"
+                android:label="@string/app_name"
+                android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.oomat.kaparov.booklog.activities.InfoActivity"
-            android:label="@string/book_info"
-            android:parentActivityName="com.oomat.kaparov.booklog.activities.CatalogActivity">
 
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.oomat.kaparov.booklog.activities.CatalogActivity"/>
-        </activity>
         <activity
-            android:name="com.oomat.kaparov.booklog.activities.EditorActivity"
-            android:label="@string/add_new_book"
-            android:parentActivityName="com.oomat.kaparov.booklog.activities.CatalogActivity">
+                android:name="com.oomat.kaparov.booklog.activities.InfoActivity"
+                android:label="@string/book_info"
+                android:parentActivityName="com.oomat.kaparov.booklog.activities.CatalogActivity">
+        </activity>
 
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.oomat.kaparov.booklog.activities.CatalogActivity"/>
-        </activity>
         <activity
-            android:name="com.oomat.kaparov.booklog.activities.ScannerActivity"
-            android:label="@string/scan_a_book"
-            android:parentActivityName="com.oomat.kaparov.booklog.activities.CatalogActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppOverlayTheme">
+                android:name="com.oomat.kaparov.booklog.activities.EditorActivity"
+                android:label="@string/add_new_book"
+                android:parentActivityName="com.oomat.kaparov.booklog.activities.CatalogActivity">
+        </activity>
+
+        <activity
+                android:name="com.oomat.kaparov.booklog.activities.ScannerActivity"
+                android:label="@string/scan_a_book"
+                android:parentActivityName="com.oomat.kaparov.booklog.activities.CatalogActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppOverlayTheme">
         </activity>
 
         <provider
-            android:name="com.oomat.kaparov.booklog.data.BookProvider"
-            android:authorities="com.oomat.kaparov.booklog"
-            android:exported="false">
+                android:name="com.oomat.kaparov.booklog.data.BookProvider"
+                android:authorities="com.oomat.kaparov.booklog"
+                android:exported="false">
         </provider>
 
         <meta-data
