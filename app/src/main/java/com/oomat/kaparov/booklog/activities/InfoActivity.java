@@ -12,8 +12,9 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.core.app.NavUtils;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
