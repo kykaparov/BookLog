@@ -7,7 +7,6 @@ import com.oomat.kaparov.booklog.model.google.VolumeInfo;
 import static com.oomat.kaparov.booklog.utils.StringUtils.stringFromList;
 
 public class Book {
-
     private String title;
     private String authors;
     private String categories;
