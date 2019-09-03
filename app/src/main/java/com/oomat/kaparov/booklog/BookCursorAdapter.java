@@ -82,6 +82,21 @@ public class BookCursorAdapter extends CursorAdapter {
         int currentColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_CURRENT_PAGE);
         int startColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_START_DATE);
         int finishColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_FINISH_DATE);
+        /*
+        int pagesColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PAGES);
+         int currentColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_CURRENT_PAGE);
+         int ratio = 0;
+        if(bookPages==0){
+            ratio = 0;
+
+        }else {
+            ratio = 100 * bookCurrent / bookPages;
+        }
+        percentTextView.setText(ratio + "%");
+        ratioTextView.setText(bookCurrent + "/" + bookPages);
+        progressBar.setProgress(ratio);
+
+         */
 
 
         // Read the book attributes from the Cursor for the current book

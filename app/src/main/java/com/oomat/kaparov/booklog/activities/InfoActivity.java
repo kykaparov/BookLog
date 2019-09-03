@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,7 @@ public class InfoActivity extends AppCompatActivity implements
     private TextView mPagesTextView;
     private TextView mTextStartDate;
     private TextView mTextFinishDate;
+    private ProgressBar mReadingProgress;
 
     private Calendar mCalendar = Calendar.getInstance();
 
@@ -117,6 +119,7 @@ public class InfoActivity extends AppCompatActivity implements
         mTextStartDate = findViewById(R.id.from_edit_start_date);
         ImageView editFinishDate = findViewById(R.id.edit_finish_date);
         mTextFinishDate = findViewById(R.id.from_edit_finish_date);
+        mReadingProgress = findViewById(R.id.catalog_progress_bar1);
 
         editStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +146,8 @@ public class InfoActivity extends AppCompatActivity implements
                 pickNumber();
             }
         });
-
+        /*
+*/
     }
 
     @Override
@@ -201,6 +205,13 @@ public class InfoActivity extends AppCompatActivity implements
             int bookCurrentPage = cursor.getInt(currentPageColumnIndex);
             String bookStartDate = cursor.getString(startDateColumnIndex);
             String bookFinishDate = cursor.getString(finishDateColumnIndex);
+            int ratio = 0;
+            if(bookPages==0){
+                ratio = 0;
+            }else {
+                ratio = 100 * bookCurrentPage / bookPages;
+            }
+            mReadingProgress.setProgress(ratio);
 
             // Update the views on the screen with the values from the database
             Bitmap bitmap = UtilsBitmap.getImage(bookImage);

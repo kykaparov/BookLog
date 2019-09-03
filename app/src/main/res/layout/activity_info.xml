@@ -135,7 +135,14 @@
         </LinearLayout>
 
         <!-- Reading progress title -->
-        <TextView
+        <ProgressBar
+            android:id="@+id/catalog_progress_bar1"
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            tools:progress="67"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/progress_background"
