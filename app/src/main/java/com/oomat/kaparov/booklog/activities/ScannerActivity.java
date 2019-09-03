@@ -161,10 +161,12 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
                 .input(R.string.search_hint, R.string.input_prefill, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                        if (input.toString().equals(""))
+                        if (input.toString().equals("")) {
                             dialog.cancel();
-                        else
+                        }
+                        else{
                             handleSearch(input.toString());
+                        }
 
                     }
                 }).show();

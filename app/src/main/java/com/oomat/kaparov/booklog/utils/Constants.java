@@ -2,7 +2,8 @@ package com.oomat.kaparov.booklog.utils;
 
 public class Constants {
 
-    public static final String GOOGLE_BOOK_API_URL = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
+    public static final String GOOGLE_BOOK_API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
+
 
     public static final int CAMERA_PERMISSION = 10;
     public static final int READ_EXTERNAL_STORAGE_PERMISSION = 20;

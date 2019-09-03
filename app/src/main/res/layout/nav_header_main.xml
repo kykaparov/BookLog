@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="32dp"
 
-        app:srcCompat="@drawable/books_folders_icon"/>
+        android:contentDescription="TODO" app:srcCompat="@drawable/books_folders_icon"/>
 
     <!--<TextView-->
     <!--android:layout_width="match_parent"-->

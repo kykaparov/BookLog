@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:src="@drawable/ic_storage_black_48dp"/>
+            android:contentDescription="TODO" android:src="@drawable/ic_storage_black_48dp"/>
 
         <TextView
             android:id="@+id/empty_title"
