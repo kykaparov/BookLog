@@ -106,7 +106,13 @@ public class BookCursorAdapter extends CursorAdapter {
 
         startTextView.setText(bookStart);
         finishTextView.setText(bookFinish);
-        int ratio = 100 * bookCurrent / bookPages;
+        int ratio = 0;
+        if(bookPages==0){
+            ratio = 0;
+
+        }else {
+            ratio = 100 * bookCurrent / bookPages;
+        }
         percentTextView.setText(ratio + "%");
         ratioTextView.setText(bookCurrent + "/" + bookPages);
         progressBar.setProgress(ratio);
